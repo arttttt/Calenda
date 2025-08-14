@@ -17,10 +17,11 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
 
-rootProject.name = "Calenda"
-
-includeBuild("build-logic")
-
-include(":app")
+rootProject.name = "build-logic"
