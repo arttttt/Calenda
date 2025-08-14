@@ -2,5 +2,5 @@
 <resources>
 
     <style name="Theme.Calenda" parent="android:Theme.Material.Light.NoActionBar" />
-    
+
 </resources>
