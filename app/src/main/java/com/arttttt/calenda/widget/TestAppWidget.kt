@@ -1,4 +1,4 @@
-package com.arttttt.calenda
+package com.arttttt.calenda.widget
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -12,7 +12,6 @@ import androidx.glance.appwidget.components.Scaffold
 import androidx.glance.appwidget.cornerRadius
 import androidx.glance.appwidget.lazy.LazyColumn
 import androidx.glance.appwidget.provideContent
-import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Row
 import androidx.glance.layout.RowScope
@@ -20,10 +19,13 @@ import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.height
 import androidx.glance.layout.padding
+import androidx.glance.preview.ExperimentalGlancePreviewApi
+import androidx.glance.preview.Preview
 import androidx.glance.text.FontFamily
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.arttttt.calenda.widget.ui.CalendarDayLayout
 
 class TestAppWidget : GlanceAppWidget() {
 
@@ -44,19 +46,20 @@ class TestAppWidget : GlanceAppWidget() {
             modifier = GlanceModifier
                 .cornerRadius(24.dp)
                 .padding(8.dp),
+            horizontalPadding = 0.dp,
             titleBar = {
                 TitleBar(
                     title = "August",
                 )
             },
         ) {
-            LazyColumn {
+            LazyColumn(
+                modifier = GlanceModifier.padding(
+                    top = 8.dp,
+                )
+            ) {
                 repeat(10) { index ->
-                    item {
-                        CalendarEvent(
-                            title = "Nothing scheduled",
-                        )
-                    }
+                    item { CalendarDayLayout() }
 
                     if (index < 10) {
                         item {
@@ -97,21 +100,12 @@ class TestAppWidget : GlanceAppWidget() {
         }
     }
 
+    @OptIn(ExperimentalGlancePreviewApi::class)
+    @Preview
     @Composable
-    private fun CalendarEvent(
-        title: String,
-    ) {
-        Row(
-            modifier = GlanceModifier
-                .fillMaxWidth()
-                .background(GlanceTheme.colors.onBackground)
-                .cornerRadius(8.dp)
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = title,
-            )
+    private fun ContentPreview() {
+        GlanceTheme {
+            Content()
         }
     }
 }
