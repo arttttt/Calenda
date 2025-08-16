@@ -32,6 +32,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
 
-    implementation(libs.androidx.glance.appwidget)
+    implementation(libs.androidx.glance.appwidget.lib)
+    implementation(libs.androidx.glance.appwidget.preview)
+    implementation(libs.androidx.glance.preview)
     implementation(libs.glance.material3)
 }
