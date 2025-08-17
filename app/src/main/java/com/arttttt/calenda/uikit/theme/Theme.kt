@@ -1,6 +1,5 @@
-package com.arttttt.calenda.ui.theme
+package com.arttttt.calenda.uikit.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

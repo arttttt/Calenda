@@ -1,4 +1,4 @@
-package com.arttttt.calenda.ui.theme
+package com.arttttt.calenda.uikit.theme
 
 import androidx.compose.ui.graphics.Color
 
