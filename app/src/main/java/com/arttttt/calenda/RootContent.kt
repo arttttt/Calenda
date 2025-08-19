@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import com.arttttt.calenda.feature.permissions.PermissionsScreen
 
 @Composable
 fun RootContent(
@@ -26,7 +27,9 @@ fun RootContent(
             rememberViewModelStoreNavEntryDecorator()
         ),
         entryProvider = entryProvider {
-            entry<Screen.CalendarPermission> {  }
+            entry<Screen.CalendarPermission> {
+                PermissionsScreen()
+            }
 
             entry<Screen.Agenda> {  }
         }
