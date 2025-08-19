@@ -1,10 +1,10 @@
-package com.arttttt.calenda.data
+package com.arttttt.calenda.common.data
 
 import android.content.Context
 import android.database.Cursor
 import android.provider.CalendarContract
-import com.arttttt.calenda.domain.CalendarInfo
-import com.arttttt.calenda.domain.CalendarRepository
+import com.arttttt.calenda.common.domain.CalendarInfo
+import com.arttttt.calenda.common.domain.CalendarRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
