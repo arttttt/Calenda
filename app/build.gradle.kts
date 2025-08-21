@@ -1,6 +1,7 @@
 plugins {
     id("app")
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.zacsweers.metro)
 }
 
 android {
