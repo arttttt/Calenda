@@ -10,10 +10,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.arttttt.calenda.metro.metroViewModel
 import com.arttttt.calenda.uikit.theme.CalendaTheme
 
 @Composable
 fun PermissionsScreen() {
+    val viewModel = metroViewModel<PermissionsViewModel>()
+
     PermissionsScreenContent()
 }
 
