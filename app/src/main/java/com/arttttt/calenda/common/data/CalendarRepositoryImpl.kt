@@ -3,8 +3,8 @@ package com.arttttt.calenda.common.data
 import android.content.Context
 import android.database.Cursor
 import android.provider.CalendarContract
-import com.arttttt.calenda.common.domain.CalendarInfo
-import com.arttttt.calenda.common.domain.CalendarRepository
+import com.arttttt.calenda.common.domain.model.CalendarInfo
+import com.arttttt.calenda.common.domain.repository.CalendarRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject

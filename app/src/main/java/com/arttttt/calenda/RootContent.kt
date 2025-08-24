@@ -9,14 +9,24 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
-import com.arttttt.calenda.feature.permissions.PermissionsScreen
+import com.arttttt.calenda.feature.agenda.AgendaScreen
+import com.arttttt.calenda.feature.permissions.presentation.PermissionsScreen
+import com.arttttt.calenda.metro.getUIGraph
 
 @Composable
 fun RootContent(
     modifier: Modifier,
 ) {
 
-    val backStack = rememberNavBackStack<Screen>(Screen.CalendarPermission)
+    val calendarPermissionsManager = getUIGraph().calendarPermissionsManager
+
+    val backStack = rememberNavBackStack(
+        if (calendarPermissionsManager.canReadCalendar()) {
+            Screen.Agenda
+        } else {
+            Screen.CalendarPermission
+        }
+    )
 
     NavDisplay(
         modifier = modifier,
@@ -28,10 +38,19 @@ fun RootContent(
         ),
         entryProvider = entryProvider {
             entry<Screen.CalendarPermission> {
-                PermissionsScreen()
+                PermissionsScreen(
+                    openMainScreen = {
+                        backStack.set(
+                            index = backStack.indices.last,
+                            element = Screen.Agenda
+                        )
+                    }
+                )
             }
 
-            entry<Screen.Agenda> {  }
+            entry<Screen.Agenda> {
+                AgendaScreen()
+            }
         }
     )
 }

@@ -31,7 +31,7 @@ internal fun Project.application(
 internal val Project.libs: VersionCatalog
     get() = extensions.getByType<VersionCatalogsExtension>().named("libs")
 
-internal fun Project.kotlinOptions(
+internal fun Project.kotlinCompilerOptions(
     block: KotlinJvmCompilerOptions.() -> Unit,
 ) {
     tasks.withType<KotlinJvmCompile>().configureEach {

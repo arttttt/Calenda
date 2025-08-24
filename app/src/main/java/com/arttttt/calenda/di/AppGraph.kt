@@ -1,8 +1,6 @@
 package com.arttttt.calenda.di
 
 import android.content.Context
-import androidx.lifecycle.ViewModelProvider
-import com.arttttt.calenda.metro.ViewModelGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
@@ -18,6 +16,4 @@ interface AppGraph {
             @Provides context: Context,
         ): AppGraph
     }
-
-    val metroViewModelFactory: ViewModelProvider.Factory
 }

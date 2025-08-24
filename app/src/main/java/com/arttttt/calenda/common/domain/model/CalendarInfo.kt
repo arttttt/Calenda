@@ -1,4 +1,4 @@
-package com.arttttt.calenda.common.domain
+package com.arttttt.calenda.common.domain.model
 
 data class CalendarInfo(
     val id: Long,

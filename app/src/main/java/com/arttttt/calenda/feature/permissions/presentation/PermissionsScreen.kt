@@ -1,4 +1,4 @@
-package com.arttttt.calenda.feature.permissions
+package com.arttttt.calenda.feature.permissions.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -14,14 +15,30 @@ import com.arttttt.calenda.metro.metroViewModel
 import com.arttttt.calenda.uikit.theme.CalendaTheme
 
 @Composable
-fun PermissionsScreen() {
+fun PermissionsScreen(
+    openMainScreen: () -> Unit,
+) {
     val viewModel = metroViewModel<PermissionsViewModel>()
 
-    PermissionsScreenContent()
+    PermissionsScreenContent(
+        onRequestPermission = viewModel::requestPermission,
+    )
+
+    LaunchedEffect(viewModel) {
+        viewModel
+            .commands
+            .collect { command ->
+                when (command) {
+                    is PermissionsViewModel.Command.OpenMainScreen -> openMainScreen()
+                }
+            }
+    }
 }
 
 @Composable
-private fun PermissionsScreenContent() {
+private fun PermissionsScreenContent(
+    onRequestPermission: () -> Unit,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -32,7 +49,7 @@ private fun PermissionsScreenContent() {
         )
 
         Button(
-            onClick = {}
+            onClick = onRequestPermission,
         ) {
             Text(
                 text = "Grant permissions",
@@ -45,6 +62,8 @@ private fun PermissionsScreenContent() {
 @Composable
 private fun PermissionsScreenPreview() {
     CalendaTheme {
-        PermissionsScreenContent()
+        PermissionsScreenContent(
+            onRequestPermission = {},
+        )
     }
 }

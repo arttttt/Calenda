@@ -3,11 +3,11 @@ package com.arttttt.calenda.metro
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import dev.zacsweers.metro.AppScope
+import com.arttttt.calenda.di.UIScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
 
-@ContributesBinding(AppScope::class)
+@ContributesBinding(UIScope::class)
 @Inject
 class MetroViewModelFactory(
     private val viewModelGraphFactory: ViewModelGraph.Factory,

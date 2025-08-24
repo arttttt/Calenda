@@ -1,7 +1,7 @@
 package delegates
 
 import extensions.android
-import extensions.kotlinOptions
+import extensions.kotlinCompilerOptions
 import extensions.libs
 import extensions.pluginId
 import org.gradle.api.JavaVersion
@@ -20,8 +20,10 @@ class KotlinDelegate : PluginDelegate {
                     targetCompatibility = JavaVersion.VERSION_17
                 }
 
-                kotlinOptions {
+                kotlinCompilerOptions {
                     jvmTarget.set(JvmTarget.JVM_17)
+
+                    freeCompilerArgs.add("-Xcontext-parameters")
                 }
             }
         }

@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
-import dev.zacsweers.metro.AppScope
+import com.arttttt.calenda.di.UIScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Multibinds
@@ -15,7 +15,7 @@ import kotlin.reflect.KClass
 @GraphExtension(ViewModelScope::class)
 interface ViewModelGraph {
 
-    @ContributesTo(AppScope::class)
+    @ContributesTo(UIScope::class)
     @GraphExtension.Factory
     interface Factory {
         fun createViewModelGraph(
