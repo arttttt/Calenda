@@ -45,4 +45,6 @@ dependencies {
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.lifecycle.viewmodel.navigation3)
     implementation(libs.kotlinx.serialization.core)
+
+    implementation(libs.arttttt.nav3router)
 }
