@@ -12,6 +12,7 @@ import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
 import com.arttttt.calenda.feature.agenda.AgendaScreen
 import com.arttttt.calenda.feature.permissions.presentation.PermissionsScreen
 import com.arttttt.calenda.metro.getUIGraph
+import com.arttttt.nav3router.Nav3Host
 
 @Composable
 fun RootContent(
@@ -28,29 +29,30 @@ fun RootContent(
         }
     )
 
-    NavDisplay(
-        modifier = modifier,
-        backStack = backStack,
-        entryDecorators = listOf(
-            rememberSceneSetupNavEntryDecorator(),
-            rememberSavedStateNavEntryDecorator(),
-            rememberViewModelStoreNavEntryDecorator()
-        ),
-        entryProvider = entryProvider {
-            entry<Screen.CalendarPermission> {
-                PermissionsScreen(
-                    openMainScreen = {
-                        backStack.set(
-                            index = backStack.indices.last,
-                            element = Screen.Agenda
-                        )
-                    }
-                )
-            }
+    Nav3Host<Screen>(
+        backStack = backStack
+    ) { backStack, onBack, router ->
+        NavDisplay(
+            modifier = modifier,
+            backStack = backStack,
+            entryDecorators = listOf(
+                rememberSceneSetupNavEntryDecorator(),
+                rememberSavedStateNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator()
+            ),
+            entryProvider = entryProvider {
+                entry<Screen.CalendarPermission> {
+                    PermissionsScreen(
+                        openMainScreen = {
+                            router.replaceCurrent(Screen.Agenda)
+                        }
+                    )
+                }
 
-            entry<Screen.Agenda> {
-                AgendaScreen()
+                entry<Screen.Agenda> {
+                    AgendaScreen()
+                }
             }
-        }
-    )
+        )
+    }
 }
