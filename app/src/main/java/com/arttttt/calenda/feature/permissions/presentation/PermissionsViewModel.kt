@@ -2,10 +2,12 @@ package com.arttttt.calenda.feature.permissions.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arttttt.calenda.Screen
 import com.arttttt.calenda.arch.CommandsHandler
 import com.arttttt.calenda.feature.permissions.domain.CalendarPermissionsManager
 import com.arttttt.calenda.metro.ViewModelKey
 import com.arttttt.calenda.metro.ViewModelScope
+import com.arttttt.nav3router.Router
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
@@ -14,22 +16,16 @@ import kotlinx.coroutines.launch
 @ContributesIntoMap(ViewModelScope::class)
 @Inject
 class PermissionsViewModel(
-    private val calendarPermissionsManager: CalendarPermissionsManager
+    private val router: Router<Screen>,
+    private val calendarPermissionsManager: CalendarPermissionsManager,
 ) : ViewModel() {
-
-    sealed interface Command {
-
-        data object OpenMainScreen : Command
-    }
-
-    val commands = CommandsHandler<Command>()
 
     fun requestPermission() {
         viewModelScope.launch {
             val isGranted = calendarPermissionsManager.requestReadCalendarPermission()
 
             if (isGranted) {
-                commands.sendCommand(Command.OpenMainScreen)
+                router.replaceCurrent(Screen.Agenda)
             }
         }
     }

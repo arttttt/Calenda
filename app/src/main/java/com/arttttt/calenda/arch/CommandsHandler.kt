@@ -10,6 +10,7 @@ class CommandsHandler<Command : Any> private constructor(
 
     companion object {
 
+        context(_: ViewModel)
         operator fun <Command : Any> invoke(): CommandsHandler<Command> {
             return CommandsHandler()
         }

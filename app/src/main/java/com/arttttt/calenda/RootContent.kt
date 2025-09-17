@@ -20,6 +20,7 @@ fun RootContent(
 ) {
 
     val calendarPermissionsManager = getUIGraph().calendarPermissionsManager
+    val router = getUIGraph().router
 
     val backStack = rememberNavBackStack(
         if (calendarPermissionsManager.canReadCalendar()) {
@@ -29,9 +30,10 @@ fun RootContent(
         }
     )
 
-    Nav3Host<Screen>(
-        backStack = backStack
-    ) { backStack, onBack, router ->
+    Nav3Host(
+        backStack = backStack,
+        router = router,
+    ) { backStack, onBack, _ ->
         NavDisplay(
             modifier = modifier,
             backStack = backStack,
@@ -41,17 +43,8 @@ fun RootContent(
                 rememberViewModelStoreNavEntryDecorator()
             ),
             entryProvider = entryProvider {
-                entry<Screen.CalendarPermission> {
-                    PermissionsScreen(
-                        openMainScreen = {
-                            router.replaceCurrent(Screen.Agenda)
-                        }
-                    )
-                }
-
-                entry<Screen.Agenda> {
-                    AgendaScreen()
-                }
+                entry<Screen.CalendarPermission> { PermissionsScreen() }
+                entry<Screen.Agenda> { AgendaScreen() }
             }
         )
     }

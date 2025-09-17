@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,24 +14,12 @@ import com.arttttt.calenda.metro.metroViewModel
 import com.arttttt.calenda.uikit.theme.CalendaTheme
 
 @Composable
-fun PermissionsScreen(
-    openMainScreen: () -> Unit,
-) {
+fun PermissionsScreen() {
     val viewModel = metroViewModel<PermissionsViewModel>()
 
     PermissionsScreenContent(
         onRequestPermission = viewModel::requestPermission,
     )
-
-    LaunchedEffect(viewModel) {
-        viewModel
-            .commands
-            .collect { command ->
-                when (command) {
-                    is PermissionsViewModel.Command.OpenMainScreen -> openMainScreen()
-                }
-            }
-    }
 }
 
 @Composable
