@@ -11,4 +11,7 @@ sealed interface Screen : NavKey {
 
     @Serializable
     data object Agenda : Screen
+
+    @Serializable
+    data object AddCalendar : Screen
 }

@@ -9,6 +9,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import androidx.navigation3.ui.rememberSceneSetupNavEntryDecorator
+import com.arttttt.calenda.feature.addcalendar.presentation.AddCalendarScreen
 import com.arttttt.calenda.feature.agenda.AgendaScreen
 import com.arttttt.calenda.feature.permissions.presentation.PermissionsScreen
 import com.arttttt.calenda.metro.getUIGraph
@@ -45,6 +46,7 @@ fun RootContent(
             entryProvider = entryProvider {
                 entry<Screen.CalendarPermission> { PermissionsScreen() }
                 entry<Screen.Agenda> { AgendaScreen() }
+                entry<Screen.AddCalendar> { AddCalendarScreen() }
             }
         )
     }

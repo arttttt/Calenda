@@ -10,15 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.arttttt.calenda.metro.metroViewModel
 
 @Composable
 fun AgendaScreen() {
-    AgendaScreenContent()
+    val viewModel = metroViewModel<AgendaViewModel>()
+
+    AgendaScreenContent(
+        onAddCalendar = viewModel::addCalendar,
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun AgendaScreenContent() {
+private fun AgendaScreenContent(
+    onAddCalendar: () -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -31,7 +38,7 @@ private fun AgendaScreenContent() {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = onAddCalendar,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -47,5 +54,7 @@ private fun AgendaScreenContent() {
 @Preview
 @Composable
 private fun AgendaScreenContentPreview() {
-    AgendaScreenContent()
+    AgendaScreenContent(
+        onAddCalendar = {},
+    )
 }
