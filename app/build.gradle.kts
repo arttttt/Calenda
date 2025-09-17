@@ -47,4 +47,6 @@ dependencies {
     implementation(libs.kotlinx.serialization.core)
 
     implementation(libs.arttttt.nav3router)
+    implementation(libs.arttttt.simplemvi.lib)
+    implementation(libs.arttttt.simplemvi.viewmodel)
 }
