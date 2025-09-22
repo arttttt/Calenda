@@ -8,6 +8,7 @@ import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.item.Calend
 import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.item.NoCalendarsListItem
 import com.arttttt.calenda.metro.ViewModelKey
 import com.arttttt.calenda.metro.ViewModelScope
+import com.arttttt.simplemvi.store.plus
 import com.arttttt.simplemvi.viewmodel.attachStore
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
@@ -36,6 +37,10 @@ class AddCalendarViewModel(
         attachStore(addCalendarStore)
     }
 
+    fun calendarClicked(id: Long) {
+        addCalendarStore + AddCalendarStore.Intent.ToggleCalendar(id)
+    }
+
     /**
      * todo: progress indicator
      */
@@ -47,6 +52,7 @@ class AddCalendarViewModel(
                     id = calendarInfo.id,
                     title = calendarInfo.displayName,
                     color = Color(calendarInfo.color),
+                    checked = calendarInfo.id in selectedCalendars,
                 )
             }
         }

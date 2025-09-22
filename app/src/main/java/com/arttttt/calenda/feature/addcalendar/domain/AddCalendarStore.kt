@@ -15,6 +15,7 @@ class AddCalendarStore(
     initialState = State(
         isInProgress = false,
         calendars = emptyList(),
+        selectedCalendars = emptySet(),
     ),
     initialIntents = listOf(
         Intent.LoadCalendars,
@@ -27,11 +28,13 @@ class AddCalendarStore(
     sealed interface Intent {
 
         data object LoadCalendars : Intent
+        data class ToggleCalendar(val id: Long) : Intent
     }
 
     data class State(
         val isInProgress: Boolean,
         val calendars: List<CalendarInfo>,
+        val selectedCalendars: Set<Long>,
     )
 
     sealed interface SideEffect

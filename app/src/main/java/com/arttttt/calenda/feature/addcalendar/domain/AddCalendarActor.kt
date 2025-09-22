@@ -11,6 +11,19 @@ class AddCalendarActor(
     override fun handleIntent(intent: AddCalendarStore.Intent) {
         when (intent) {
             is AddCalendarStore.Intent.LoadCalendars -> loadCalendars()
+            is AddCalendarStore.Intent.ToggleCalendar -> toggleCalendar(intent.id)
+        }
+    }
+
+    private fun toggleCalendar(id: Long) {
+        reduce {
+            copy(
+                selectedCalendars = if (id in selectedCalendars) {
+                    selectedCalendars - id
+                } else {
+                    selectedCalendars + id
+                }
+            )
         }
     }
 

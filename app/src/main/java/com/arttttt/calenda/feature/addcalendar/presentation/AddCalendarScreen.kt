@@ -1,8 +1,6 @@
 package com.arttttt.calenda.feature.addcalendar.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,12 +25,14 @@ fun AddCalendarScreen() {
 
     AddCalendarScreenContent(
         items = uiState.items,
+        onCalendarClick = viewModel::calendarClicked,
     )
 }
 
 @Composable
 private fun AddCalendarScreenContent(
     items: List<ListItem>,
+    onCalendarClick: (Long) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -50,7 +50,10 @@ private fun AddCalendarScreenContent(
                     modifier = Modifier.fillParentMaxWidth(),
                     title = item.title,
                     color = item.color,
-                    onClick = {},
+                    checked = item.checked,
+                    onClick = {
+                        onCalendarClick(item.id)
+                    },
                 )
                 is NoCalendarsListItem -> NoCalendarsItemContent(
                     modifier = Modifier.fillParentMaxWidth(),
@@ -65,5 +68,6 @@ private fun AddCalendarScreenContent(
 private fun AddCalendarScreenContentPreview() {
     AddCalendarScreenContent(
         items = emptyList(),
+        onCalendarClick = {},
     )
 }

@@ -7,6 +7,7 @@ data class CalendarListItem(
     val id: Long,
     val title: String,
     val color: Color,
+    val checked: Boolean,
 ) : ListItem {
 
     override val key: Any by this::id
