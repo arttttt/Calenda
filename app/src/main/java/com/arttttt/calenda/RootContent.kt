@@ -1,6 +1,7 @@
 package com.arttttt.calenda
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheetDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
@@ -51,7 +52,9 @@ fun RootContent(
                 entry<Screen.CalendarPermission> { PermissionsScreen() }
                 entry<Screen.Agenda> { AgendaScreen() }
                 entry<Screen.AddCalendar>(
-                    metadata = BottomSheetSceneStrategy.bottomSheet()
+                    metadata = BottomSheetSceneStrategy.bottomSheet(
+                        modalBottomSheetProperties = ModalBottomSheetDefaults.properties
+                    )
                 ) { AddCalendarScreen() }
             }
         )

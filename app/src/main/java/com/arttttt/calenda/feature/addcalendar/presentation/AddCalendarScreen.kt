@@ -34,8 +34,9 @@ private fun AddCalendarScreenContent(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(8.dp)
+        contentPadding = PaddingValues(
+            vertical = 8.dp,
+        )
     ) {
         items(
             items = items,
@@ -44,7 +45,10 @@ private fun AddCalendarScreenContent(
         ) { item ->
             when (item) {
                 is CalendarListItem -> CalendarItemContent(
+                    modifier = Modifier.fillParentMaxWidth(),
                     title = item.title,
+                    color = item.color,
+                    onClick = {},
                 )
             }
         }

@@ -1,5 +1,6 @@
 package com.arttttt.calenda.feature.addcalendar.presentation
 
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arttttt.calenda.feature.addcalendar.domain.AddCalendarStore
@@ -28,6 +29,7 @@ class AddCalendarViewModel(
                     CalendarListItem(
                         id = calendarInfo.id,
                         title = calendarInfo.displayName,
+                        color = Color(calendarInfo.color),
                     )
                 },
             )
