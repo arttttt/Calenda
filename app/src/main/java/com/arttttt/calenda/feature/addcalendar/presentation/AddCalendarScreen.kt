@@ -14,7 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.content.CalendarItemContent
+import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.content.NoCalendarsItemContent
 import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.item.CalendarListItem
+import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.item.NoCalendarsListItem
 import com.arttttt.calenda.metro.metroViewModel
 
 @Composable
@@ -49,6 +51,9 @@ private fun AddCalendarScreenContent(
                     title = item.title,
                     color = item.color,
                     onClick = {},
+                )
+                is NoCalendarsListItem -> NoCalendarsItemContent(
+                    modifier = Modifier.fillParentMaxWidth(),
                 )
             }
         }
