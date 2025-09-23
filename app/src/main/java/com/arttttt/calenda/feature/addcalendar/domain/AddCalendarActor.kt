@@ -8,9 +8,12 @@ class AddCalendarActor(
     private val calendarRepository: CalendarRepository,
 ) : DefaultActor<AddCalendarStore.Intent, AddCalendarStore.State, AddCalendarStore.SideEffect>() {
 
+    override fun onInit() {
+        loadCalendars()
+    }
+
     override fun handleIntent(intent: AddCalendarStore.Intent) {
         when (intent) {
-            is AddCalendarStore.Intent.LoadCalendars -> loadCalendars()
             is AddCalendarStore.Intent.ToggleCalendar -> toggleCalendar(intent.id)
         }
     }

@@ -17,17 +17,12 @@ class AddCalendarStore(
         calendars = emptyList(),
         selectedCalendars = emptySet(),
     ),
-    initialIntents = listOf(
-        Intent.LoadCalendars,
-    ),
     actor = AddCalendarActor(
         calendarRepository = calendarRepository,
     ),
 ) {
 
     sealed interface Intent {
-
-        data object LoadCalendars : Intent
         data class ToggleCalendar(val id: Long) : Intent
     }
 
