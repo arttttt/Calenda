@@ -57,6 +57,16 @@ class CalendarRepositoryImpl(
         }
     }
 
+    private fun getCalendarsCursor(): Cursor? {
+        return contentResolver.query(
+            uri,
+            projection,
+            null,
+            null,
+            null,
+        )
+    }
+
     private fun Cursor.getCalendarInfo(
         idColumn: Int,
         displayNameColumn: Int,
@@ -70,16 +80,6 @@ class CalendarRepositoryImpl(
             accountName = this.getString(accountNameColumn) ?: "N/A",
             ownerName = this.getString(ownerAccountColumn) ?: "N/A",
             color = this.getInt(colorColumn),
-        )
-    }
-
-    private fun getCalendarsCursor(): Cursor? {
-        return contentResolver.query(
-            uri,
-            projection,
-            null,
-            null,
-            null,
         )
     }
 }
