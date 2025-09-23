@@ -21,6 +21,7 @@ class MetroViewModelFactory(
 
         val factory = viewModelScope.viewModelProviders[modelClass.kotlin] ?: error("Unknown ViewModel class: $modelClass")
 
+        @Suppress("UNCHECKED_CAST")
         return factory.invoke() as T
     }
 }
