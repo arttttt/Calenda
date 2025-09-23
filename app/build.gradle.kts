@@ -36,6 +36,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    implementation(libs.androidx.datastore.preferences)
+
     implementation(libs.androidx.glance.appwidget.lib)
     implementation(libs.androidx.glance.appwidget.preview)
     implementation(libs.androidx.glance.preview)
