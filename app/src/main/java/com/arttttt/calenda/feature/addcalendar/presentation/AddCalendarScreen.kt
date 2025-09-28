@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.arttttt.calenda.common.presentation.ListItem
@@ -63,11 +64,27 @@ private fun AddCalendarScreenContent(
     }
 }
 
-@Preview
+@Preview(
+    showBackground = true,
+)
 @Composable
 private fun AddCalendarScreenContentPreview() {
     AddCalendarScreenContent(
-        items = emptyList(),
+        items = listOf(
+            CalendarListItem(
+                id = 1,
+                title = "Calendar 1",
+                color = Color(0xFF000000),
+                checked = false,
+            ),
+            CalendarListItem(
+                id = 2,
+                title = "Calendar 2",
+                color = Color(0xFFFF0000),
+                checked = true,
+            ),
+
+        ),
         onCalendarClick = {},
     )
 }

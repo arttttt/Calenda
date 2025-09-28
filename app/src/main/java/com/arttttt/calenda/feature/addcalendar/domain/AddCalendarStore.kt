@@ -2,6 +2,7 @@ package com.arttttt.calenda.feature.addcalendar.domain
 
 import com.arttttt.calenda.common.domain.model.CalendarInfo
 import com.arttttt.calenda.common.domain.repository.CalendarRepository
+import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
 import com.arttttt.simplemvi.store.storeName
@@ -9,7 +10,8 @@ import dev.zacsweers.metro.Inject
 
 @Inject
 class AddCalendarStore(
-    calendarRepository: CalendarRepository
+    calendarRepository: CalendarRepository,
+    selectedCalendarsRepository: SelectedCalendarsRepository,
 ) : Store<AddCalendarStore.Intent, AddCalendarStore.State, AddCalendarStore.SideEffect> by createStore(
     name = storeName<AddCalendarStore>(),
     initialState = State(
@@ -19,6 +21,7 @@ class AddCalendarStore(
     ),
     actor = AddCalendarActor(
         calendarRepository = calendarRepository,
+        selectedCalendarsRepository = selectedCalendarsRepository,
     ),
 ) {
 
