@@ -17,6 +17,7 @@ nav3router = "1.0.0"
 simplemvi = "0.5.2"
 datastore = "1.1.7"
 materialIcons = "1.3.0"
+datetime = "0.7.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +51,7 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 arttttt-nav3router = { module = "io.github.arttttt.nav3router:nav3router", version.ref = "nav3router" }
 arttttt-simplemvi-lib = { module = "io.github.arttttt.simplemvi:simplemvi", version.ref = "simplemvi" }
 arttttt-simplemvi-viewmodel = { module = "io.github.arttttt.simplemvi:simplemvi-viewmodel", version.ref = "simplemvi" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
