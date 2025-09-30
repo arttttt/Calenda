@@ -34,6 +34,7 @@ import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.NoSelectedC
 import com.arttttt.calenda.metro.metroViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
@@ -62,27 +63,29 @@ private fun AgendaScreenContent(
 ) {
     val lazyListState = rememberLazyListState()
 
-    LaunchedEffect(lazyListState, uiState.canLoadPrevious) {
+    LaunchedEffect(lazyListState) {
         snapshotFlow {
-            val firstVisibleItemIndex = lazyListState.firstVisibleItemIndex
-            firstVisibleItemIndex == 0 && lazyListState.firstVisibleItemScrollOffset == 0
+            lazyListState.firstVisibleItemIndex
         }
             .distinctUntilChanged()
-            .filter { it && uiState.canLoadPrevious }
+            .filter { firstVisibleItemIndex -> firstVisibleItemIndex <= 3 }
             .collect {
                 onLoadPrevious()
             }
     }
 
-    LaunchedEffect(lazyListState, uiState.canLoadNext) {
+    LaunchedEffect(Unit) {
         snapshotFlow {
-            val layoutInfo = lazyListState.layoutInfo
-            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1
-            val totalItems = layoutInfo.totalItemsCount
-            lastVisibleItemIndex >= totalItems - 3
+            lazyListState.layoutInfo
         }
+            .map { layoutInfo ->
+                (layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1) to layoutInfo.totalItemsCount
+            }
             .distinctUntilChanged()
-            .filter { it && uiState.canLoadNext }
+            .filter { (lastVisibleItemIndex, totalItemsCount) ->
+                val totalItems = totalItemsCount
+                lastVisibleItemIndex >= totalItems - 3
+            }
             .collect {
                 onLoadNext()
             }
