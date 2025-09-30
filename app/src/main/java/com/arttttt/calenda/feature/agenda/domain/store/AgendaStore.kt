@@ -38,7 +38,6 @@ class AgendaStore(
         data object LoadInitialData : Intent
         data object LoadPreviousPage : Intent
         data object LoadNextPage : Intent
-        data object Refresh : Intent
     }
 
     data class State(

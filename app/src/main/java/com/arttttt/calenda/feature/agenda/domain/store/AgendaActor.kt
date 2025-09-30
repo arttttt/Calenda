@@ -37,7 +37,6 @@ class AgendaActor(
             AgendaStore.Intent.LoadInitialData -> loadInitialData()
             AgendaStore.Intent.LoadPreviousPage -> loadPreviousPage()
             AgendaStore.Intent.LoadNextPage -> loadNextPage()
-            AgendaStore.Intent.Refresh -> refresh()
         }
     }
 
@@ -166,42 +165,6 @@ class AgendaActor(
             }.onFailure {
                 reduce {
                     copy(isLoadingNext = false)
-                }
-            }
-        }
-    }
-
-    private fun refresh() {
-        if (state.isLoading) return
-
-        val earliestDate = state.earliestDate ?: state.currentDate
-        val latestDate = state.latestDate ?: state.currentDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
-
-        reduce {
-            copy(isLoading = true)
-        }
-
-        scope.launch {
-            eventsRepository.getEvents(
-                calendarIds = state.selectedCalendars,
-                startTime = earliestDate.toStartOfDayMillis(),
-                endTime = latestDate.toEndOfDayMillis(),
-            ).onSuccess { events ->
-                val days = groupEventsByDays(
-                    events = events,
-                    startDate = earliestDate,
-                    endDate = latestDate,
-                )
-
-                reduce {
-                    copy(
-                        days = days,
-                        isLoading = false,
-                    )
-                }
-            }.onFailure {
-                reduce {
-                    copy(isLoading = false)
                 }
             }
         }

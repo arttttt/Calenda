@@ -49,7 +49,6 @@ fun AgendaScreen() {
         onAddCalendarClick = viewModel::onAddCalendarClick,
         onLoadPrevious = viewModel::onLoadPrevious,
         onLoadNext = viewModel::onLoadNext,
-        onRefresh = viewModel::onRefresh,
     )
 }
 
@@ -60,7 +59,6 @@ private fun AgendaScreenContent(
     onAddCalendarClick: () -> Unit,
     onLoadPrevious: () -> Unit,
     onLoadNext: () -> Unit,
-    onRefresh: () -> Unit,
 ) {
     val lazyListState = rememberLazyListState()
 
@@ -197,6 +195,5 @@ private fun AgendaScreenContentPreview() {
         onAddCalendarClick = {},
         onLoadPrevious = {},
         onLoadNext = {},
-        onRefresh = {},
     )
 }

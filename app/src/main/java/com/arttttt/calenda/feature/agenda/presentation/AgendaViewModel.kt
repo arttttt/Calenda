@@ -59,10 +59,6 @@ class AgendaViewModel(
         agendaStore + AgendaStore.Intent.LoadNextPage
     }
 
-    fun onRefresh() {
-        agendaStore + AgendaStore.Intent.Refresh
-    }
-
     private fun AgendaStore.State.toUIState(): AgendaUIState {
         val items = buildList {
             if (isLoading && days.isEmpty()) {
