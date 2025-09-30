@@ -23,10 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.arttttt.calenda.common.presentation.ListItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.DayHeaderItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.EmptyItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.EventItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.LoadingItemContent
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaDayHeaderItemContent
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaEmptyItemContent
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaEventItemContent
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaLoadingItemContent
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaDayHeaderItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEmptyItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEventItem
@@ -131,14 +131,14 @@ private fun AgendaList(
             contentType = { it::class },
         ) { item ->
             when (item) {
-                is AgendaDayHeaderItem -> DayHeaderItemContent(
+                is AgendaDayHeaderItem -> AgendaDayHeaderItemContent(
                     modifier = Modifier.fillParentMaxWidth(),
                     dayOfWeek = item.dayOfWeek,
                     dayOfMonth = item.dayOfMonth,
                     month = item.month,
                 )
 
-                is AgendaEventItem -> EventItemContent(
+                is AgendaEventItem -> AgendaEventItemContent(
                     modifier = Modifier.fillParentMaxWidth(),
                     title = item.title,
                     time = item.time,
@@ -147,11 +147,11 @@ private fun AgendaList(
                     isAllDay = item.isAllDay,
                 )
 
-                is AgendaLoadingItem -> LoadingItemContent(
+                is AgendaLoadingItem -> AgendaLoadingItemContent(
                     modifier = Modifier.fillParentMaxSize(),
                 )
 
-                is AgendaEmptyItem -> EmptyItemContent(
+                is AgendaEmptyItem -> AgendaEmptyItemContent(
                     modifier = Modifier.fillParentMaxSize(),
                 )
             }

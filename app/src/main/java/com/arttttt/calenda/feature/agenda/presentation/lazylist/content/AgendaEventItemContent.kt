@@ -21,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun EventItemContent(
+fun AgendaEventItemContent(
     modifier: Modifier,
     title: String,
     time: String,
@@ -80,8 +80,8 @@ fun EventItemContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun EventItemContentPreview() {
-    EventItemContent(
+private fun AgendaEventItemContentPreview() {
+    AgendaEventItemContent(
         modifier = Modifier,
         title = "Team Meeting with stakeholders to discuss quarterly goals",
         time = "14:00 - 15:30",

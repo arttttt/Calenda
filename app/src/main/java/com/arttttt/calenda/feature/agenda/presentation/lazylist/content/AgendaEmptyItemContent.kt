@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun EmptyItemContent(
+fun AgendaEmptyItemContent(
     modifier: Modifier,
 ) {
     Box(
@@ -48,8 +48,8 @@ fun EmptyItemContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun EmptyItemContentPreview() {
-    EmptyItemContent(
+private fun AgendaEmptyItemContentPreview() {
+    AgendaEmptyItemContent(
         modifier = Modifier,
     )
 }

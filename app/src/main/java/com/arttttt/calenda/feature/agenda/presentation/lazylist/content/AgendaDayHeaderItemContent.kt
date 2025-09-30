@@ -15,7 +15,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 @Composable
-fun DayHeaderItemContent(
+fun AgendaDayHeaderItemContent(
     modifier: Modifier,
     dayOfWeek: String,
     dayOfMonth: String,
@@ -43,9 +43,9 @@ fun DayHeaderItemContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun DayHeaderItemContentPreview() {
+private fun AgendaDayHeaderItemContentPreview() {
     val today = LocalDate.now()
-    DayHeaderItemContent(
+    AgendaDayHeaderItemContent(
         modifier = Modifier,
         dayOfWeek = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()),
         dayOfMonth = today.dayOfMonth.toString(),

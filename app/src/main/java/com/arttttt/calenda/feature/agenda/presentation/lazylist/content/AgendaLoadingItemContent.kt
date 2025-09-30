@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun LoadingItemContent(
+fun AgendaLoadingItemContent(
     modifier: Modifier,
 ) {
     Box(
@@ -26,8 +26,8 @@ fun LoadingItemContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun LoadingItemContentPreview() {
-    LoadingItemContent(
+private fun AgendaLoadingItemContentPreview() {
+    AgendaLoadingItemContent(
         modifier = Modifier,
     )
 }
