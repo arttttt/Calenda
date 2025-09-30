@@ -56,10 +56,19 @@ class AgendaActor(
     private fun loadInitialData() {
         if (state.isLoading) return
 
+        if (state.selectedCalendars.isEmpty()) {
+            reduce {
+                copy(
+                    days = emptyList(),
+                )
+            }
+
+            return
+        }
+
         reduce {
             copy(
                 isLoading = true,
-                days = emptyList(),
             )
         }
 
@@ -67,30 +76,33 @@ class AgendaActor(
             val startDate = state.currentDate
             val endDate = startDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
 
-            eventsRepository.getEvents(
-                calendarIds = state.selectedCalendars,
-                startTime = startDate.toStartOfDayMillis(),
-                endTime = endDate.toEndOfDayMillis(),
-            ).onSuccess { events ->
-                val days = groupEventsByDays(
-                    events = events,
-                    startDate = startDate,
-                    endDate = endDate,
+            eventsRepository
+                .getEvents(
+                    calendarIds = state.selectedCalendars,
+                    startTime = startDate.toStartOfDayMillis(),
+                    endTime = endDate.toEndOfDayMillis(),
                 )
+                .onSuccess { events ->
+                    val days = groupEventsByDays(
+                        events = events,
+                        startDate = startDate,
+                        endDate = endDate,
+                    )
 
-                reduce {
-                    copy(
-                        days = days,
-                        isLoading = false,
-                    )
+                    reduce {
+                        copy(
+                            days = days,
+                            isLoading = false,
+                        )
+                    }
                 }
-            }.onFailure {
-                reduce {
-                    copy(
-                        isLoading = false,
-                    )
+                .onFailure {
+                    reduce {
+                        copy(
+                            isLoading = false,
+                        )
+                    }
                 }
-            }
         }
     }
 
