@@ -3,12 +3,11 @@ package com.arttttt.calenda.feature.agenda.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arttttt.calenda.Screen
-import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.agenda.domain.store.AgendaStore
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaDayHeaderItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEmptyItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaLoadingItem
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.NoSelectedCalendarsItem
 import com.arttttt.calenda.metro.ViewModelKey
 import com.arttttt.calenda.metro.ViewModelScope
 import com.arttttt.nav3router.Router
@@ -65,8 +64,8 @@ class AgendaViewModel(
                 isLoading && days.isEmpty() -> {
                     this += AgendaLoadingItem
                 }
-                days.isEmpty() && selectedCalendars.isNotEmpty() -> {
-                    this += AgendaEmptyItem
+                selectedCalendars.isEmpty() -> {
+                    this += NoSelectedCalendarsItem
                 }
                 else -> {
                     days.forEach { day ->

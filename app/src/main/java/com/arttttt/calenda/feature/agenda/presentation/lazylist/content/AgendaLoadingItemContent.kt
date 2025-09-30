@@ -1,7 +1,7 @@
 package com.arttttt.calenda.feature.agenda.presentation.lazylist.content
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -15,9 +15,7 @@ fun AgendaLoadingItemContent(
     modifier: Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 32.dp),
+        modifier = modifier.padding(vertical = 32.dp),
         contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator()
@@ -28,6 +26,6 @@ fun AgendaLoadingItemContent(
 @Composable
 private fun AgendaLoadingItemContentPreview() {
     AgendaLoadingItemContent(
-        modifier = Modifier,
+        modifier = Modifier.fillMaxSize(),
     )
 }

@@ -24,13 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaDayHeaderItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaEmptyItemContent
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaEventItemContent
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaLoadingItemContent
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.NoSelectedCalendarsItemContent
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaDayHeaderItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEmptyItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaLoadingItem
+import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.NoSelectedCalendarsItem
 import com.arttttt.calenda.metro.metroViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -137,7 +137,6 @@ private fun AgendaList(
                     dayOfMonth = item.dayOfMonth,
                     month = item.month,
                 )
-
                 is AgendaEventItem -> AgendaEventItemContent(
                     modifier = Modifier.fillParentMaxWidth(),
                     title = item.title,
@@ -146,12 +145,10 @@ private fun AgendaList(
                     color = Color(item.color),
                     isAllDay = item.isAllDay,
                 )
-
                 is AgendaLoadingItem -> AgendaLoadingItemContent(
                     modifier = Modifier.fillParentMaxSize(),
                 )
-
-                is AgendaEmptyItem -> AgendaEmptyItemContent(
+                is NoSelectedCalendarsItem -> NoSelectedCalendarsItemContent(
                     modifier = Modifier.fillParentMaxSize(),
                 )
             }

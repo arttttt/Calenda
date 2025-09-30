@@ -3,6 +3,7 @@ package com.arttttt.calenda.feature.agenda.presentation.lazylist.content
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,20 +17,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AgendaEmptyItemContent(
+fun NoSelectedCalendarsItemContent(
     modifier: Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 64.dp),
+        modifier = modifier.padding(vertical = 64.dp),
         contentAlignment = Alignment.Center,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "No events",
+                text = "No selected calendars",
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center,
             )
@@ -37,7 +36,7 @@ fun AgendaEmptyItemContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "You don't have any events in the selected calendars",
+                text = "You has not selected any calendars",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center,
@@ -48,8 +47,8 @@ fun AgendaEmptyItemContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun AgendaEmptyItemContentPreview() {
-    AgendaEmptyItemContent(
-        modifier = Modifier,
+private fun NoSelectedCalendarsItemContentPreview() {
+    NoSelectedCalendarsItemContent(
+        modifier = Modifier.fillMaxSize(),
     )
 }
