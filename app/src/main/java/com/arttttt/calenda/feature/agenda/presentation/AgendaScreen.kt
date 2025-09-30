@@ -132,13 +132,17 @@ private fun AgendaList(
         ) { item ->
             when (item) {
                 is AgendaDayHeaderItem -> AgendaDayHeaderItemContent(
-                    modifier = Modifier.fillParentMaxWidth(),
+                    modifier = Modifier
+                        .animateItem()
+                        .fillParentMaxWidth(),
                     dayOfWeek = item.dayOfWeek,
                     dayOfMonth = item.dayOfMonth,
                     month = item.month,
                 )
                 is AgendaEventItem -> AgendaEventItemContent(
-                    modifier = Modifier.fillParentMaxWidth(),
+                    modifier = Modifier
+                        .animateItem()
+                        .fillParentMaxWidth(),
                     title = item.title,
                     time = item.time,
                     location = item.location,
@@ -146,10 +150,14 @@ private fun AgendaList(
                     isAllDay = item.isAllDay,
                 )
                 is AgendaLoadingItem -> AgendaLoadingItemContent(
-                    modifier = Modifier.fillParentMaxSize(),
+                    modifier = Modifier
+                        .animateItem()
+                        .fillParentMaxSize(),
                 )
                 is NoSelectedCalendarsItem -> NoSelectedCalendarsItemContent(
-                    modifier = Modifier.fillParentMaxSize(),
+                    modifier = Modifier
+                        .animateItem()
+                        .fillParentMaxSize(),
                 )
             }
         }
