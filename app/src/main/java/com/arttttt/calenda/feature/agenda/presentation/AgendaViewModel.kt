@@ -61,40 +61,44 @@ class AgendaViewModel(
 
     private fun AgendaStore.State.toUIState(): AgendaUIState {
         val items = buildList {
-            if (isLoading && days.isEmpty()) {
-                this += AgendaLoadingItem
-            } else if (days.isEmpty() && selectedCalendars.isNotEmpty()) {
-                this += AgendaEmptyItem
-            } else {
-                days.forEach { day ->
-                    this += AgendaDayHeaderItem(
-                        date = day.date,
-                        dayOfWeek = day.date.dayOfWeek.getDisplayName(),
-                        dayOfMonth = day.date.dayOfMonth.toString(),
-                        month = day.date.month.getShortName(),
-                    )
-
-                    day.events.forEach { event ->
-                        this += AgendaEventItem(
-                            id = event.id,
-                            title = event.title,
-                            time = if (event.isAllDay) {
-                                "All day"
-                            } else {
-                                val timeZone = TimeZone.currentSystemDefault()
-                                val startTime = Instant
-                                    .fromEpochMilliseconds(event.startTime)
-                                    .toLocalDateTime(timeZone)
-                                    .time
-                                val endTime = Instant.fromEpochMilliseconds(event.endTime)
-                                    .toLocalDateTime(timeZone)
-                                    .time
-                                "${startTime.format()} - ${endTime.format()}"
-                            },
-                            location = event.location,
-                            color = event.color,
-                            isAllDay = event.isAllDay,
+            when {
+                isLoading && days.isEmpty() -> {
+                    this += AgendaLoadingItem
+                }
+                days.isEmpty() && selectedCalendars.isNotEmpty() -> {
+                    this += AgendaEmptyItem
+                }
+                else -> {
+                    days.forEach { day ->
+                        this += AgendaDayHeaderItem(
+                            date = day.date,
+                            dayOfWeek = day.date.dayOfWeek.getDisplayName(),
+                            dayOfMonth = day.date.dayOfMonth.toString(),
+                            month = day.date.month.getShortName(),
                         )
+
+                        day.events.forEach { event ->
+                            this += AgendaEventItem(
+                                id = event.id,
+                                title = event.title,
+                                time = if (event.isAllDay) {
+                                    "All day"
+                                } else {
+                                    val timeZone = TimeZone.currentSystemDefault()
+                                    val startTime = Instant
+                                        .fromEpochMilliseconds(event.startTime)
+                                        .toLocalDateTime(timeZone)
+                                        .time
+                                    val endTime = Instant.fromEpochMilliseconds(event.endTime)
+                                        .toLocalDateTime(timeZone)
+                                        .time
+                                    "${startTime.format()} - ${endTime.format()}"
+                                },
+                                location = event.location,
+                                color = event.color,
+                                isAllDay = event.isAllDay,
+                            )
+                        }
                     }
                 }
             }
