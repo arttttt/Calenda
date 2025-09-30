@@ -148,11 +148,11 @@ private fun AgendaList(
                 )
 
                 is AgendaLoadingItem -> LoadingItemContent(
-                    modifier = Modifier.fillParentMaxWidth(),
+                    modifier = Modifier.fillParentMaxSize(),
                 )
 
                 is AgendaEmptyItem -> EmptyItemContent(
-                    modifier = Modifier.fillParentMaxWidth(),
+                    modifier = Modifier.fillParentMaxSize(),
                 )
             }
         }
