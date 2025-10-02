@@ -5,4 +5,5 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.jetbrains.kotlin.serialization) apply false
     alias(libs.plugins.zacsweers.metro) apply false
+    alias(libs.plugins.google.ksp) apply false
 }

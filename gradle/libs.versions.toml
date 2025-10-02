@@ -14,10 +14,11 @@ lifecycleViewmodelNav3 = "1.0.0-alpha04"
 kotlinxSerializationCore = "1.9.0"
 metro = "0.6.8"
 nav3router = "1.0.0"
-simplemvi = "0.5.2"
+simplemvi = "0.6.0"
 datastore = "1.1.7"
 materialIcons = "1.7.8"
 datetime = "0.7.1"
+ksp = "2.2.20-2.0.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,8 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 arttttt-nav3router = { module = "io.github.arttttt.nav3router:nav3router", version.ref = "nav3router" }
 arttttt-simplemvi-lib = { module = "io.github.arttttt.simplemvi:simplemvi", version.ref = "simplemvi" }
 arttttt-simplemvi-viewmodel = { module = "io.github.arttttt.simplemvi:simplemvi-viewmodel", version.ref = "simplemvi" }
+arttttt-simplemvi-annotations = { module = "io.github.arttttt.simplemvi:simplemvi-annotations", version.ref = "simplemvi" }
+arttttt-simplemvi-codegen = { module = "io.github.arttttt.simplemvi:simplemvi-codegen", version.ref = "simplemvi" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 
 [plugins]
@@ -59,4 +62,5 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 zacsweers-metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

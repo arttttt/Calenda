@@ -2,6 +2,7 @@ plugins {
     id("app")
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.zacsweers.metro)
+    alias(libs.plugins.google.ksp)
 }
 
 android {
@@ -58,6 +59,8 @@ dependencies {
     implementation(libs.arttttt.nav3router)
     implementation(libs.arttttt.simplemvi.lib)
     implementation(libs.arttttt.simplemvi.viewmodel)
+    implementation(libs.arttttt.simplemvi.annotations)
+    ksp(libs.arttttt.simplemvi.codegen)
 
     implementation(libs.kotlinx.datetime)
 }
