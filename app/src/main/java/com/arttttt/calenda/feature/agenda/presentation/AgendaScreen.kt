@@ -63,7 +63,7 @@ private fun AgendaScreenContent(
 ) {
     val lazyListState = rememberLazyListState()
 
-    LaunchedEffect(lazyListState) {
+    LaunchedEffect(Unit) {
         snapshotFlow {
             lazyListState.firstVisibleItemIndex
         }
