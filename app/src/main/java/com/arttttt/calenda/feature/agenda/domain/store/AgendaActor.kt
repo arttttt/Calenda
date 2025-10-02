@@ -76,6 +76,8 @@ class AgendaActor(
             val startDate = state.earliestDate ?: state.currentDate.minus(DatePeriod(days = PAGE_SIZE_DAYS))
             val endDate = state.latestDate ?: state.currentDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
 
+            val wasEmpty = state.days.isEmpty()
+
             eventsRepository
                 .getEvents(
                     calendarIds = state.selectedCalendars,
@@ -94,6 +96,10 @@ class AgendaActor(
                             days = days,
                             isLoading = false,
                         )
+                    }
+
+                    if (wasEmpty && days.isNotEmpty()) {
+                        sideEffect(AgendaStore.SideEffect.InitialDataLoaded)
                     }
                 }
                 .onFailure {

@@ -57,5 +57,8 @@ class AgendaStore(
             get() = days.lastOrNull()?.date
     }
 
-    sealed interface SideEffect
+    sealed interface SideEffect {
+
+        data object InitialDataLoaded : SideEffect
+    }
 }

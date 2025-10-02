@@ -3,6 +3,7 @@ package com.arttttt.calenda.feature.agenda.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arttttt.calenda.Screen
+import com.arttttt.calenda.arch.CommandsHandler
 import com.arttttt.calenda.feature.agenda.domain.store.AgendaStore
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaDayHeaderItem
 import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEventItem
@@ -16,7 +17,10 @@ import com.arttttt.simplemvi.viewmodel.attachStore
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.DayOfWeek
 import kotlinx.datetime.LocalTime
@@ -33,6 +37,13 @@ class AgendaViewModel(
     private val router: Router<Screen>,
 ) : ViewModel() {
 
+    sealed interface Command {
+
+        data class ScrollTo(
+            val index: Int,
+        ) : Command
+    }
+
     val uiState = agendaStore
         .states
         .map { state -> state.toUIState() }
@@ -42,8 +53,26 @@ class AgendaViewModel(
             initialValue = agendaStore.state.toUIState(),
         )
 
+    val commands = CommandsHandler<Command>()
+
     init {
         attachStore(agendaStore)
+
+        agendaStore
+            .sideEffects
+            .filterIsInstance<AgendaStore.SideEffect.InitialDataLoaded>()
+            .onEach {
+                val state = agendaStore.state
+                val items = uiState.value.items
+                val currentDateIndex = items.indexOfFirst { item ->
+                    item is AgendaDayHeaderItem && item.date == state.currentDate
+                }
+
+                if (currentDateIndex != -1) {
+                    commands.sendCommand(Command.ScrollTo(currentDateIndex))
+                }
+            }
+            .launchIn(viewModelScope)
     }
 
     fun onAddCalendarClick() {

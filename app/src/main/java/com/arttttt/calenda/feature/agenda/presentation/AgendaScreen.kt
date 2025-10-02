@@ -34,7 +34,10 @@ import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.NoSelectedC
 import com.arttttt.calenda.metro.metroViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import kotlin.time.Clock
@@ -45,23 +48,23 @@ fun AgendaScreen() {
 
     val uiState by viewModel.uiState.collectAsState()
 
+    val lazyListState = rememberLazyListState()
+
     AgendaScreenContent(
         uiState = uiState,
+        lazyListState = lazyListState,
         onAddCalendarClick = viewModel::onAddCalendarClick,
-        onLoadPrevious = viewModel::onLoadPrevious,
-        onLoadNext = viewModel::onLoadNext,
     )
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun AgendaScreenContent(
-    uiState: AgendaUIState,
-    onAddCalendarClick: () -> Unit,
-    onLoadPrevious: () -> Unit,
-    onLoadNext: () -> Unit,
-) {
-    val lazyListState = rememberLazyListState()
+    LaunchedEffect(Unit) {
+        viewModel
+            .commands
+            .filterIsInstance<AgendaViewModel.Command.ScrollTo>()
+            .onEach { command ->
+                lazyListState.requestScrollToItem(command.index)
+            }
+            .launchIn(this)
+    }
 
     LaunchedEffect(Unit) {
         snapshotFlow {
@@ -70,7 +73,7 @@ private fun AgendaScreenContent(
             .distinctUntilChanged()
             .filter { firstVisibleItemIndex -> firstVisibleItemIndex <= 3 }
             .collect {
-                onLoadPrevious()
+                viewModel.onLoadPrevious()
             }
     }
 
@@ -87,9 +90,18 @@ private fun AgendaScreenContent(
                 lastVisibleItemIndex >= totalItems - 3
             }
             .collect {
-                onLoadNext()
+                viewModel.onLoadNext()
             }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun AgendaScreenContent(
+    uiState: AgendaUIState,
+    lazyListState: LazyListState,
+    onAddCalendarClick: () -> Unit,
+) {
 
     Scaffold(
         topBar = {
@@ -200,8 +212,7 @@ private fun AgendaScreenContentPreview() {
             canLoadPrevious = true,
             canLoadNext = true,
         ),
+        lazyListState = rememberLazyListState(),
         onAddCalendarClick = {},
-        onLoadPrevious = {},
-        onLoadNext = {},
     )
 }
