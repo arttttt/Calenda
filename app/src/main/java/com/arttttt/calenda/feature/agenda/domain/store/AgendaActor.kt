@@ -73,8 +73,8 @@ class AgendaActor(
         }
 
         scope.launch {
-            val startDate = state.currentDate
-            val endDate = startDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
+            val startDate = state.earliestDate ?: state.currentDate
+            val endDate = state.latestDate ?: state.currentDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
 
             eventsRepository
                 .getEvents(
