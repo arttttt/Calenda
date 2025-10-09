@@ -32,6 +32,7 @@ android {
     kotlin {
         compilerOptions {
             optIn.add("kotlin.time.ExperimentalTime")
+            optIn.add("kotlinx.coroutines.FlowPreview")
         }
     }
 }
