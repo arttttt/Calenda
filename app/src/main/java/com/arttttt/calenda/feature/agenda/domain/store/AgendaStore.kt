@@ -2,6 +2,7 @@ package com.arttttt.calenda.feature.agenda.domain.store
 
 import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
 import com.arttttt.calenda.feature.agenda.domain.model.AgendaDay
+import com.arttttt.calenda.feature.agenda.domain.model.EventChange
 import com.arttttt.calenda.feature.agenda.domain.repository.EventsRepository
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
@@ -38,6 +39,7 @@ class AgendaStore(
         data object LoadInitialData : Intent
         data object LoadPreviousPage : Intent
         data object LoadNextPage : Intent
+        data class ProcessCalendarChanges(val changes: List<EventChange>) : Intent
     }
 
     data class State(

@@ -3,8 +3,10 @@ package com.arttttt.calenda.feature.agenda.domain.store
 import com.arttttt.calenda.common.domain.model.CalendarEvent
 import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
 import com.arttttt.calenda.feature.agenda.domain.model.AgendaDay
+import com.arttttt.calenda.feature.agenda.domain.model.EventChange
 import com.arttttt.calenda.feature.agenda.domain.repository.EventsRepository
 import com.arttttt.simplemvi.actor.DefaultActor
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -28,15 +30,18 @@ class AgendaActor(
         private const val PAGE_SIZE_DAYS = 14
     }
 
+    private var observationJob: Job? = null
+
     override fun onInit() {
         observeSelectedCalendars()
     }
 
     override fun handleIntent(intent: AgendaStore.Intent) {
         when (intent) {
-            AgendaStore.Intent.LoadInitialData -> loadInitialData()
-            AgendaStore.Intent.LoadPreviousPage -> loadPreviousPage()
-            AgendaStore.Intent.LoadNextPage -> loadNextPage()
+            is AgendaStore.Intent.LoadInitialData -> loadInitialData()
+            is AgendaStore.Intent.LoadPreviousPage -> loadPreviousPage()
+            is AgendaStore.Intent.LoadNextPage -> loadNextPage()
+            is AgendaStore.Intent.ProcessCalendarChanges -> processCalendarChanges(intent.changes)
         }
     }
 
@@ -53,10 +58,34 @@ class AgendaActor(
             .launchIn(scope)
     }
 
+    private fun startObservingChanges(
+        calendarIds: Set<Long>,
+        startTime: Long,
+        endTime: Long,
+        initialEvents: List<CalendarEvent>,
+    ) {
+        observationJob?.cancel()
+
+        observationJob = eventsRepository
+            .observeEventChanges(
+                calendarIds = calendarIds,
+                startTime = startTime,
+                endTime = endTime,
+                initialEvents = initialEvents,
+            )
+            .onEach { changes ->
+                intent(AgendaStore.Intent.ProcessCalendarChanges(changes))
+            }
+            .launchIn(scope)
+    }
+
     private fun loadInitialData() {
         if (state.isLoading) return
 
         if (state.selectedCalendars.isEmpty()) {
+            observationJob?.cancel()
+            observationJob = null
+
             reduce {
                 copy(
                     days = emptyList(),
@@ -97,6 +126,13 @@ class AgendaActor(
                             isLoading = false,
                         )
                     }
+
+                    startObservingChanges(
+                        calendarIds = state.selectedCalendars,
+                        startTime = startDate.toStartOfDayMillis(),
+                        endTime = endDate.toEndOfDayMillis(),
+                        initialEvents = events,
+                    )
 
                     if (wasEmpty && days.isNotEmpty()) {
                         sideEffect(AgendaStore.SideEffect.InitialDataLoaded)
@@ -142,6 +178,17 @@ class AgendaActor(
                         isLoadingPrevious = false,
                     )
                 }
+
+                val newEarliestDate = state.earliestDate ?: return@onSuccess
+                val newLatestDate = state.latestDate ?: return@onSuccess
+                val allCurrentEvents = state.days.flatMap { it.events }
+
+                startObservingChanges(
+                    calendarIds = state.selectedCalendars,
+                    startTime = newEarliestDate.toStartOfDayMillis(),
+                    endTime = newLatestDate.toEndOfDayMillis(),
+                    initialEvents = allCurrentEvents,
+                )
             }.onFailure {
                 reduce {
                     copy(isLoadingPrevious = false)
@@ -180,11 +227,57 @@ class AgendaActor(
                         isLoadingNext = false,
                     )
                 }
+
+                val newEarliestDate = state.earliestDate ?: return@onSuccess
+                val newLatestDate = state.latestDate ?: return@onSuccess
+                val allCurrentEvents = state.days.flatMap { it.events }
+
+                startObservingChanges(
+                    calendarIds = state.selectedCalendars,
+                    startTime = newEarliestDate.toStartOfDayMillis(),
+                    endTime = newLatestDate.toEndOfDayMillis(),
+                    initialEvents = allCurrentEvents,
+                )
             }.onFailure {
                 reduce {
                     copy(isLoadingNext = false)
                 }
             }
+        }
+    }
+
+    private fun processCalendarChanges(changes: List<EventChange>) {
+        val currentEventsMap = state.days
+            .flatMap { it.events }
+            .associateBy { it.eventId }
+            .toMutableMap()
+
+        changes.forEach { change ->
+            when (change) {
+                is EventChange.Added -> {
+                    currentEventsMap[change.event.eventId] = change.event
+                }
+                is EventChange.Removed -> {
+                    currentEventsMap.remove(change.event.eventId)
+                }
+                is EventChange.Modified -> {
+                    currentEventsMap[change.event.eventId] = change.event
+                }
+            }
+        }
+
+        val updatedEvents = currentEventsMap.values.toList()
+        val earliestDate = state.earliestDate ?: return
+        val latestDate = state.latestDate ?: return
+
+        val updatedDays = groupEventsByDays(
+            events = updatedEvents,
+            startDate = earliestDate,
+            endDate = latestDate,
+        )
+
+        reduce {
+            copy(days = updatedDays)
         }
     }
 
@@ -220,8 +313,8 @@ class AgendaActor(
                 0,
                 0,
                 0,
-                0
-            )
+                0,
+            ),
         )
             .toInstant(TimeZone.currentSystemDefault())
             .toEpochMilliseconds()
