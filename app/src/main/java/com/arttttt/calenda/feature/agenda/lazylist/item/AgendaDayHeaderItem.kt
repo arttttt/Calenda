@@ -1,4 +1,4 @@
-package com.arttttt.calenda.feature.agenda.presentation.lazylist.item
+package com.arttttt.calenda.feature.agenda.lazylist.item
 
 import com.arttttt.calenda.common.presentation.ListItem
 import kotlinx.datetime.LocalDate

@@ -1,4 +1,4 @@
-package com.arttttt.calenda.feature.agenda.presentation
+package com.arttttt.calenda.feature.agenda
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,14 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.arttttt.calenda.common.presentation.ListItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaDayHeaderItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaEventItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.AgendaLoadingItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.content.NoSelectedCalendarsItemContent
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaDayHeaderItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEventItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaLoadingItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.NoSelectedCalendarsItem
+import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaDayHeaderItemContent
+import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaEventItemContent
+import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaLoadingItemContent
+import com.arttttt.calenda.feature.agenda.lazylist.content.NoSelectedCalendarsItemContent
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaDayHeaderItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.NoSelectedCalendarsItem
 import com.arttttt.calenda.metro.metroViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter

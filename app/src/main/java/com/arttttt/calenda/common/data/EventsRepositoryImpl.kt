@@ -1,4 +1,4 @@
-package com.arttttt.calenda.feature.agenda.data
+package com.arttttt.calenda.common.data
 
 import android.content.Context
 import android.database.ContentObserver
@@ -8,8 +8,8 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.CalendarContract
 import com.arttttt.calenda.common.domain.model.CalendarEvent
-import com.arttttt.calenda.feature.agenda.domain.model.EventChange
-import com.arttttt.calenda.feature.agenda.domain.repository.EventsRepository
+import com.arttttt.calenda.common.domain.model.EventChange
+import com.arttttt.calenda.common.domain.repository.EventsRepository
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesBinding
 import dev.zacsweers.metro.Inject
@@ -23,6 +23,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.collections.iterator
+import kotlin.collections.plusAssign
 import kotlin.time.Duration.Companion.milliseconds
 
 @ContributesBinding(AppScope::class)

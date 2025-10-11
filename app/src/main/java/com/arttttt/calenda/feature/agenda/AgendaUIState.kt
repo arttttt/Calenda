@@ -1,4 +1,4 @@
-package com.arttttt.calenda.feature.agenda.presentation
+package com.arttttt.calenda.feature.agenda
 
 import com.arttttt.calenda.common.presentation.ListItem
 

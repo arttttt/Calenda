@@ -1,14 +1,14 @@
-package com.arttttt.calenda.feature.agenda.presentation
+package com.arttttt.calenda.feature.agenda
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arttttt.calenda.Screen
 import com.arttttt.calenda.arch.CommandsHandler
-import com.arttttt.calenda.feature.agenda.domain.store.AgendaStore
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaDayHeaderItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaEventItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.AgendaLoadingItem
-import com.arttttt.calenda.feature.agenda.presentation.lazylist.item.NoSelectedCalendarsItem
+import com.arttttt.calenda.common.domain.store.AgendaStore
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaDayHeaderItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.NoSelectedCalendarsItem
 import com.arttttt.calenda.metro.ViewModelKey
 import com.arttttt.calenda.metro.ViewModelScope
 import com.arttttt.nav3router.Router
@@ -27,6 +27,7 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.collections.plusAssign
 import kotlin.time.Instant
 
 @ViewModelKey(AgendaViewModel::class)
@@ -117,7 +118,8 @@ class AgendaViewModel(
                                         .fromEpochMilliseconds(event.startTime)
                                         .toLocalDateTime(timeZone)
                                         .time
-                                    val endTime = Instant.fromEpochMilliseconds(event.endTime)
+                                    val endTime = Instant
+                                        .fromEpochMilliseconds(event.endTime)
                                         .toLocalDateTime(timeZone)
                                         .time
                                     "${startTime.format()} - ${endTime.format()}"

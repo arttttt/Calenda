@@ -1,7 +1,7 @@
-package com.arttttt.calenda.feature.agenda.domain.repository
+package com.arttttt.calenda.common.domain.repository
 
 import com.arttttt.calenda.common.domain.model.CalendarEvent
-import com.arttttt.calenda.feature.agenda.domain.model.EventChange
+import com.arttttt.calenda.common.domain.model.EventChange
 import kotlinx.coroutines.flow.Flow
 
 interface EventsRepository {

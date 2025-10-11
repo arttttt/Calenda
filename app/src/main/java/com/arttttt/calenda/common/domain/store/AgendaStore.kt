@@ -1,9 +1,9 @@
-package com.arttttt.calenda.feature.agenda.domain.store
+package com.arttttt.calenda.common.domain.store
 
 import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
-import com.arttttt.calenda.feature.agenda.domain.model.AgendaDay
-import com.arttttt.calenda.feature.agenda.domain.model.EventChange
-import com.arttttt.calenda.feature.agenda.domain.repository.EventsRepository
+import com.arttttt.calenda.common.domain.model.AgendaDay
+import com.arttttt.calenda.common.domain.model.EventChange
+import com.arttttt.calenda.common.domain.repository.EventsRepository
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
 import com.arttttt.simplemvi.store.storeName

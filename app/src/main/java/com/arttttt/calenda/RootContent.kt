@@ -11,7 +11,7 @@ import androidx.navigation3.runtime.rememberSavedStateNavEntryDecorator
 import androidx.navigation3.scene.rememberSceneSetupNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.arttttt.calenda.feature.addcalendar.presentation.AddCalendarScreen
-import com.arttttt.calenda.feature.agenda.presentation.AgendaScreen
+import com.arttttt.calenda.feature.agenda.AgendaScreen
 import com.arttttt.calenda.feature.permissions.presentation.PermissionsScreen
 import com.arttttt.calenda.metro.getUIGraph
 import com.arttttt.calenda.nav3.BottomSheetSceneStrategy

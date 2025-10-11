@@ -1,6 +1,5 @@
-package com.arttttt.calenda.feature.agenda.domain.model
+package com.arttttt.calenda.common.domain.model
 
-import com.arttttt.calenda.common.domain.model.CalendarEvent
 import kotlinx.datetime.LocalDate
 
 data class AgendaDay(

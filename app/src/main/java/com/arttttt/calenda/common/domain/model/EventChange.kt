@@ -1,6 +1,4 @@
-package com.arttttt.calenda.feature.agenda.domain.model
-
-import com.arttttt.calenda.common.domain.model.CalendarEvent
+package com.arttttt.calenda.common.domain.model
 
 sealed interface EventChange {
 

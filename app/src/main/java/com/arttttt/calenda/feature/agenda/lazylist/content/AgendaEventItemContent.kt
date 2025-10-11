@@ -1,4 +1,4 @@
-package com.arttttt.calenda.feature.agenda.presentation.lazylist.content
+package com.arttttt.calenda.feature.agenda.lazylist.content
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
