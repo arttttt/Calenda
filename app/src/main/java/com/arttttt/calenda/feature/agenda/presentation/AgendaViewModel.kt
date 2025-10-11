@@ -101,7 +101,7 @@ class AgendaViewModel(
                         this += AgendaDayHeaderItem(
                             date = day.date,
                             dayOfWeek = day.date.dayOfWeek.getDisplayName(),
-                            dayOfMonth = day.date.dayOfMonth.toString(),
+                            dayOfMonth = day.date.day.toString(),
                             month = day.date.month.getShortName(),
                         )
 
