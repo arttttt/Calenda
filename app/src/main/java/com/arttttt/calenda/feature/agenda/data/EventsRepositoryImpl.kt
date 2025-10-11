@@ -65,11 +65,11 @@ class EventsRepositoryImpl(
         endTime: Long,
     ): Result<List<CalendarEvent>> {
         return runCatching {
-            withContext(Dispatchers.IO) {
-                if (calendarIds.isEmpty()) {
-                    return@withContext emptyList()
-                }
+            if (calendarIds.isEmpty()) {
+                return@runCatching emptyList()
+            }
 
+            withContext(Dispatchers.IO) {
                 queryInstances(
                     calendarIds = calendarIds,
                     startTime = startTime,
