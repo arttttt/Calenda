@@ -3,7 +3,7 @@ package com.arttttt.calenda.widget
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
-class TestAppWidgetReceiver : GlanceAppWidgetReceiver() {
+class AgendaWidgetReceiver : GlanceAppWidgetReceiver() {
 
-    override val glanceAppWidget: GlanceAppWidget = TestAppWidget()
+    override val glanceAppWidget: GlanceAppWidget = AgendaWidget()
 }

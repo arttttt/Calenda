@@ -26,7 +26,7 @@
         </activity>
 
         <receiver
-            android:name=".widget.TestAppWidgetReceiver"
+            android:name=".widget.AgendaWidgetReceiver"
             android:exported="true">
 
             <intent-filter>

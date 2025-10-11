@@ -27,7 +27,7 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.arttttt.calenda.widget.ui.CalendarDayLayout
 
-class TestAppWidget : GlanceAppWidget() {
+class AgendaWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(
         context: Context,
