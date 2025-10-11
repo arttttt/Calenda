@@ -249,19 +249,19 @@ class AgendaActor(
     private fun processCalendarChanges(changes: List<EventChange>) {
         val currentEventsMap = state.days
             .flatMap { it.events }
-            .associateBy { it.eventId }
+            .associateBy { it.id }
             .toMutableMap()
 
         changes.forEach { change ->
             when (change) {
                 is EventChange.Added -> {
-                    currentEventsMap[change.event.eventId] = change.event
+                    currentEventsMap[change.event.id] = change.event
                 }
                 is EventChange.Removed -> {
-                    currentEventsMap.remove(change.event.eventId)
+                    currentEventsMap.remove(change.event.id)
                 }
                 is EventChange.Modified -> {
-                    currentEventsMap[change.event.eventId] = change.event
+                    currentEventsMap[change.event.id] = change.event
                 }
             }
         }
