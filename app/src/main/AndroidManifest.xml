@@ -41,6 +41,16 @@
 
         </receiver>
 
+        <receiver
+            android:name=".widget.WidgetRefreshReceiver"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="com.arttttt.calenda.ACTION_REFRESH_WIDGET" />
+            </intent-filter>
+
+        </receiver>
+
     </application>
 
 </manifest>

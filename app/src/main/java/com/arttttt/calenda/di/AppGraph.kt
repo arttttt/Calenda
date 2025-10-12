@@ -6,6 +6,7 @@ import com.arttttt.calenda.common.data.SelectedCalendarsRepositoryImpl
 import com.arttttt.calenda.common.domain.repository.EventsRepository
 import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
 import com.arttttt.calenda.common.domain.store.AgendaStore
+import com.arttttt.calenda.widget.WidgetUpdateManager
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Provides
@@ -22,6 +23,8 @@ interface AppGraph {
             @Provides context: Context,
         ): AppGraph
     }
+
+    val widgetUpdateManager: WidgetUpdateManager
 
     @Provides
     @SingleIn(AppScope::class)

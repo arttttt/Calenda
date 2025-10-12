@@ -9,4 +9,11 @@ class App : Application() {
     val appGraph by lazy {
         createGraphFactory<AppGraph.Factory>().create(this)
     }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        appGraph.widgetUpdateManager.cancelPeriodicUpdates()
+        appGraph.widgetUpdateManager.schedulePeriodicUpdates()
+    }
 }
