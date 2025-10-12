@@ -31,8 +31,12 @@ import com.arttttt.calenda.widget.di.WidgetGraph
 import com.arttttt.calenda.widget.ui.AgendaWidgetDaySection
 import dev.zacsweers.metro.asContribution
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.DatePeriod
 import kotlinx.datetime.LocalDate
@@ -137,16 +141,20 @@ class AgendaWidget : GlanceAppWidget() {
     }
 
     private suspend fun loadWidgetData(context: Context): WidgetData {
-        return withContext(Dispatchers.IO) {
-            val widgetGraph = context.appGraph.asContribution<WidgetGraph.Factory>().create()
-            val agendaStore = widgetGraph.agendaStore
+        val widgetGraph = context.appGraph.asContribution<WidgetGraph.Factory>().create()
+        val agendaStore = widgetGraph.agendaStore
 
+        return withContext(Dispatchers.IO) {
             try {
-                val state = agendaStore.states
-                    .filter { !it.isLoading }
+                agendaStore
+                    .states
+                    .map { state -> state.isLoading }
+                    .distinctUntilChanged()
+                    .drop(1)
+                    .filter { isLoading -> !isLoading }
                     .first()
 
-                val days = state.days
+                val days = agendaStore.state.days
 
                 val today = days.getOrNull(0)
                 val tomorrow = days.getOrNull(1)
