@@ -25,23 +25,49 @@ import androidx.glance.text.FontFamily
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.arttttt.calenda.widget.ui.CalendarDayLayout
+import com.arttttt.calenda.common.domain.model.CalendarEvent
+import com.arttttt.calenda.metro.appGraph
+import com.arttttt.calenda.widget.di.WidgetGraph
+import com.arttttt.calenda.widget.ui.AgendaWidgetDaySection
+import dev.zacsweers.metro.asContribution
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 class AgendaWidget : GlanceAppWidget() {
+
+    private data class WidgetData(
+        val today: DayData,
+        val tomorrow: DayData,
+    )
+
+    private data class DayData(
+        val date: LocalDate,
+        val events: List<CalendarEvent>,
+    )
 
     override suspend fun provideGlance(
         context: Context,
         id: GlanceId,
     ) {
+        val widgetData = loadWidgetData(context)
+
         provideContent {
             GlanceTheme {
-                Content()
+                Content(widgetData)
             }
         }
     }
 
     @Composable
-    private fun Content() {
+    private fun Content(data: WidgetData) {
         Scaffold(
             modifier = GlanceModifier
                 .cornerRadius(24.dp)
@@ -49,7 +75,7 @@ class AgendaWidget : GlanceAppWidget() {
             horizontalPadding = 0.dp,
             titleBar = {
                 TitleBar(
-                    title = "August",
+                    title = "Agenda",
                 )
             },
         ) {
@@ -58,16 +84,26 @@ class AgendaWidget : GlanceAppWidget() {
                     top = 8.dp,
                 )
             ) {
-                repeat(10) { index ->
-                    item { CalendarDayLayout() }
+                item {
+                    AgendaWidgetDaySection(
+                        dayLabel = "Today",
+                        date = data.today.date,
+                        events = data.today.events,
+                    )
+                }
 
-                    if (index < 10) {
-                        item {
-                            Spacer(
-                                modifier = GlanceModifier.height(8.dp),
-                            )
-                        }
-                    }
+                item {
+                    Spacer(
+                        modifier = GlanceModifier.height(16.dp),
+                    )
+                }
+
+                item {
+                    AgendaWidgetDaySection(
+                        dayLabel = "Tomorrow",
+                        date = data.tomorrow.date,
+                        events = data.tomorrow.events,
+                    )
                 }
             }
         }
@@ -83,7 +119,7 @@ class AgendaWidget : GlanceAppWidget() {
     ) {
         Row(
             modifier = modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Vertical.CenterVertically
+            verticalAlignment = Alignment.Vertical.CenterVertically,
         ) {
             Text(
                 modifier = GlanceModifier.defaultWeight(),
@@ -91,7 +127,7 @@ class AgendaWidget : GlanceAppWidget() {
                 style = TextStyle(
                     color = textColor,
                     fontSize = 16.sp,
-                    fontFamily = fontFamily
+                    fontFamily = fontFamily,
                 ),
                 maxLines = 1,
             )
@@ -100,12 +136,62 @@ class AgendaWidget : GlanceAppWidget() {
         }
     }
 
+    private suspend fun loadWidgetData(context: Context): WidgetData {
+        return withContext(Dispatchers.IO) {
+            val widgetGraph = context.appGraph.asContribution<WidgetGraph.Factory>().create()
+            val agendaStore = widgetGraph.agendaStore
+
+            try {
+                val state = agendaStore.states
+                    .filter { !it.isLoading }
+                    .first()
+
+                val days = state.days
+
+                val today = days.getOrNull(0)
+                val tomorrow = days.getOrNull(1)
+
+                WidgetData(
+                    today = DayData(
+                        date = today?.date ?: getTodayDate(),
+                        events = today?.events ?: emptyList(),
+                    ),
+                    tomorrow = DayData(
+                        date = tomorrow?.date ?: getTomorrowDate(),
+                        events = tomorrow?.events ?: emptyList(),
+                    ),
+                )
+            } finally {
+                agendaStore.destroy()
+            }
+        }
+    }
+
+    private fun getTodayDate(): LocalDate {
+        return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+    }
+
+    private fun getTomorrowDate(): LocalDate {
+        return getTodayDate().plus(DatePeriod(days = 1))
+    }
+
     @OptIn(ExperimentalGlancePreviewApi::class)
     @Preview
     @Composable
     private fun ContentPreview() {
         GlanceTheme {
-            Content()
+            Content(
+                WidgetData(
+                    today = DayData(
+                        date = getTodayDate(),
+                        events = emptyList(),
+                    ),
+                    tomorrow = DayData(
+                        date = getTomorrowDate(),
+                        events = emptyList(),
+                    ),
+                ),
+            )
         }
     }
 }

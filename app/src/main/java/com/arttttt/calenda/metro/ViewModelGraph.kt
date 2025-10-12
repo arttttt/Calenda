@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.arttttt.calenda.di.UIScope
+import com.arttttt.calenda.feature.agenda.AgendaViewModel
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Multibinds
@@ -25,6 +26,8 @@ interface ViewModelGraph {
 
     @Multibinds
     val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
+
+    val agendaViewModel: AgendaViewModel
 
     @Provides
     fun provideSavedStateHandle(
