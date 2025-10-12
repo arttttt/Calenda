@@ -27,7 +27,7 @@ interface ViewModelGraph {
     val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 
     @Provides
-    fun provideSavedStateHandle(
+    private fun provideSavedStateHandle(
         creationExtras: CreationExtras,
     ): SavedStateHandle {
         return creationExtras.createSavedStateHandle()

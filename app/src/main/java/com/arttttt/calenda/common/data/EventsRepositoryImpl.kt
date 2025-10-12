@@ -10,9 +10,6 @@ import android.provider.CalendarContract
 import com.arttttt.calenda.common.domain.model.CalendarEvent
 import com.arttttt.calenda.common.domain.model.EventChange
 import com.arttttt.calenda.common.domain.repository.EventsRepository
-import dev.zacsweers.metro.AppScope
-import dev.zacsweers.metro.ContributesBinding
-import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -23,12 +20,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.collections.iterator
-import kotlin.collections.plusAssign
 import kotlin.time.Duration.Companion.milliseconds
 
-@ContributesBinding(AppScope::class)
-@Inject
 class EventsRepositoryImpl(
     context: Context,
 ) : EventsRepository {
