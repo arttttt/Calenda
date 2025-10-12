@@ -3,8 +3,10 @@ package com.arttttt.calenda.common.domain.store
 import com.arttttt.calenda.common.domain.model.CalendarEvent
 import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
 import com.arttttt.calenda.common.domain.model.AgendaDay
+import com.arttttt.calenda.common.domain.model.DateRange
 import com.arttttt.calenda.common.domain.model.EventChange
 import com.arttttt.calenda.common.domain.repository.EventsRepository
+import com.arttttt.calenda.common.domain.strategy.AgendaLoadingStrategy
 import com.arttttt.simplemvi.actor.DefaultActor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -24,11 +26,8 @@ import kotlin.time.Instant
 class AgendaActor(
     private val eventsRepository: EventsRepository,
     private val selectedCalendarsRepository: SelectedCalendarsRepository,
+    private val loadingStrategy: AgendaLoadingStrategy,
 ) : DefaultActor<AgendaStore.Intent, AgendaStore.State, AgendaStore.SideEffect>() {
-
-    companion object {
-        private const val PAGE_SIZE_DAYS = 14
-    }
 
     private var observationJob: Job? = null
 
@@ -102,22 +101,30 @@ class AgendaActor(
         }
 
         scope.launch {
-            val startDate = state.earliestDate ?: state.currentDate.minus(DatePeriod(days = PAGE_SIZE_DAYS))
-            val endDate = state.latestDate ?: state.currentDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
+            val range = if (state.days.isEmpty()) {
+                loadingStrategy.calculateInitialRange(state.currentDate)
+            } else {
+                val existingStart = state.earliestDate ?: state.currentDate
+                val existingEnd = state.latestDate ?: state.currentDate
+                DateRange(
+                    existingStart,
+                    existingEnd
+                )
+            }
 
             val wasEmpty = state.days.isEmpty()
 
             eventsRepository
                 .getEvents(
                     calendarIds = state.selectedCalendars,
-                    startTime = startDate.toStartOfDayMillis(),
-                    endTime = endDate.toEndOfDayMillis(),
+                    startTime = range.startDate.toStartOfDayMillis(),
+                    endTime = range.endDate.toEndOfDayMillis(),
                 )
                 .onSuccess { events ->
                     val days = groupEventsByDays(
                         events = events,
-                        startDate = startDate,
-                        endDate = endDate,
+                        startDate = range.startDate,
+                        endDate = range.endDate,
                     )
 
                     reduce {
@@ -129,8 +136,8 @@ class AgendaActor(
 
                     startObservingChanges(
                         calendarIds = state.selectedCalendars,
-                        startTime = startDate.toStartOfDayMillis(),
-                        endTime = endDate.toEndOfDayMillis(),
+                        startTime = range.startDate.toStartOfDayMillis(),
+                        endTime = range.endDate.toEndOfDayMillis(),
                         initialEvents = events,
                     )
 
@@ -153,23 +160,22 @@ class AgendaActor(
 
         val earliestDate = state.earliestDate ?: return
 
+        val range = loadingStrategy.calculatePreviousRange(earliestDate) ?: return
+
         reduce {
             copy(isLoadingPrevious = true)
         }
 
         scope.launch {
-            val endDate = earliestDate.minus(DatePeriod(days = 1))
-            val startDate = endDate.minus(DatePeriod(days = PAGE_SIZE_DAYS))
-
             eventsRepository.getEvents(
                 calendarIds = state.selectedCalendars,
-                startTime = startDate.toStartOfDayMillis(),
-                endTime = endDate.toEndOfDayMillis(),
+                startTime = range.startDate.toStartOfDayMillis(),
+                endTime = range.endDate.toEndOfDayMillis(),
             ).onSuccess { events ->
                 val newDays = groupEventsByDays(
                     events = events,
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = range.startDate,
+                    endDate = range.endDate,
                 )
 
                 reduce {
@@ -198,27 +204,27 @@ class AgendaActor(
     }
 
     private fun loadNextPage() {
-        if (state.isLoadingNext || !state.canLoadNext) return
+        if (state.isLoadingNext) return
+        if (!state.canLoadNext) return
 
         val latestDate = state.latestDate ?: return
+
+        val range = loadingStrategy.calculateNextRange(latestDate) ?: return
 
         reduce {
             copy(isLoadingNext = true)
         }
 
         scope.launch {
-            val startDate = latestDate.plus(DatePeriod(days = 1))
-            val endDate = startDate.plus(DatePeriod(days = PAGE_SIZE_DAYS))
-
             eventsRepository.getEvents(
                 calendarIds = state.selectedCalendars,
-                startTime = startDate.toStartOfDayMillis(),
-                endTime = endDate.toEndOfDayMillis(),
+                startTime = range.startDate.toStartOfDayMillis(),
+                endTime = range.endDate.toEndOfDayMillis(),
             ).onSuccess { events ->
                 val newDays = groupEventsByDays(
                     events = events,
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = range.startDate,
+                    endDate = range.endDate,
                 )
 
                 reduce {

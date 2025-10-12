@@ -4,6 +4,8 @@ import com.arttttt.calenda.common.domain.repository.SelectedCalendarsRepository
 import com.arttttt.calenda.common.domain.model.AgendaDay
 import com.arttttt.calenda.common.domain.model.EventChange
 import com.arttttt.calenda.common.domain.repository.EventsRepository
+import com.arttttt.calenda.common.domain.strategy.AgendaLoadingStrategy
+import com.arttttt.calenda.feature.agenda.domain.ScreenAgendaLoadingStrategy
 import com.arttttt.simplemvi.store.Store
 import com.arttttt.simplemvi.store.createStore
 import com.arttttt.simplemvi.store.storeName
@@ -17,6 +19,7 @@ import kotlin.time.Clock
 class AgendaStore(
     eventsRepository: EventsRepository,
     selectedCalendarsRepository: SelectedCalendarsRepository,
+    loadingStrategy: AgendaLoadingStrategy = ScreenAgendaLoadingStrategy(),
 ) : Store<AgendaStore.Intent, AgendaStore.State, AgendaStore.SideEffect> by createStore(
     name = storeName<AgendaStore>(),
     initialState = State(
@@ -32,6 +35,7 @@ class AgendaStore(
     actor = AgendaActor(
         eventsRepository = eventsRepository,
         selectedCalendarsRepository = selectedCalendarsRepository,
+        loadingStrategy = loadingStrategy,
     ),
 ) {
 
