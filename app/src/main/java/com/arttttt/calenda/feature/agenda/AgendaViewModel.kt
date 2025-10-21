@@ -9,6 +9,7 @@ import com.arttttt.calenda.common.domain.model.CalendarEvent
 import com.arttttt.calenda.common.domain.store.AgendaStore
 import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaDayHeaderItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEmptyDayItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaWeekHeaderItem
@@ -107,7 +108,7 @@ class AgendaViewModel(
                     this += NoSelectedCalendarsItem
                 }
                 else -> {
-                    addWeekGroupedItems(days)
+                    addWeekGroupedItems(days, currentDate)
                 }
             }
         }
@@ -120,26 +121,40 @@ class AgendaViewModel(
         )
     }
 
-    private fun MutableList<ListItem>.addWeekGroupedItems(days: List<AgendaDay>) {
+    private fun MutableList<ListItem>.addWeekGroupedItems(days: List<AgendaDay>, currentDate: LocalDate) {
         val weeks = days.groupBy { day -> day.date.getWeekStart() }
 
         weeks.forEach { (weekStart, daysInWeek) ->
             val hasEvents = daysInWeek.any { it.events.isNotEmpty() }
+            val containsCurrentDay = daysInWeek.any { it.date == currentDate }
 
-            if (hasEvents) {
-                addWeekWithEvents(daysInWeek)
+            if (hasEvents || containsCurrentDay) {
+                addWeekWithEvents(daysInWeek, currentDate)
             } else {
                 addEmptyWeek(weekStart)
             }
         }
     }
 
-    private fun MutableList<ListItem>.addWeekWithEvents(daysInWeek: List<AgendaDay>) {
+    private fun MutableList<ListItem>.addWeekWithEvents(daysInWeek: List<AgendaDay>, currentDate: LocalDate) {
         daysInWeek.forEach { day ->
-            if (day.events.isNotEmpty()) {
+            val isCurrentDay = day.date == currentDate
+            val hasEvents = day.events.isNotEmpty()
+
+            // Show current day always, or days with events
+            if (isCurrentDay || hasEvents) {
                 this += createDayHeaderItem(day.date)
-                day.events.forEach { event ->
-                    this += createEventItem(event)
+
+                if (hasEvents) {
+                    day.events.forEach { event ->
+                        this += createEventItem(event)
+                    }
+                } else {
+                    // Current day with no events
+                    this += AgendaEmptyDayItem(
+                        date = day.date,
+                        message = "No events",
+                    )
                 }
             }
         }

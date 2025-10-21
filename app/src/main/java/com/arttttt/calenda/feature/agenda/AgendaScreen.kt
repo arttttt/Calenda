@@ -24,11 +24,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaDayHeaderItemContent
+import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaEmptyDayItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaEventItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaLoadingItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaWeekHeaderItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.NoSelectedCalendarsItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaDayHeaderItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEmptyDayItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaWeekHeaderItem
@@ -161,6 +163,12 @@ private fun AgendaList(
                         .animateItem()
                         .fillParentMaxWidth(),
                     weekLabel = item.weekLabel,
+                )
+                is AgendaEmptyDayItem -> AgendaEmptyDayItemContent(
+                    modifier = Modifier
+                        .animateItem()
+                        .fillParentMaxWidth(),
+                    message = item.message,
                 )
                 is AgendaEventItem -> AgendaEventItemContent(
                     modifier = Modifier
