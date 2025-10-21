@@ -4,10 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arttttt.calenda.Screen
 import com.arttttt.calenda.arch.CommandsHandler
+import com.arttttt.calenda.common.domain.model.AgendaDay
+import com.arttttt.calenda.common.domain.model.CalendarEvent
 import com.arttttt.calenda.common.domain.store.AgendaStore
+import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaDayHeaderItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEmptyDayItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaWeekHeaderItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.NoSelectedCalendarsItem
 import com.arttttt.calenda.metro.ViewModelKey
 import com.arttttt.calenda.metro.ViewModelScope
@@ -22,10 +27,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.datetime.DayOfWeek
+import kotlinx.datetime.DatePeriod
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.Month
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.DayOfWeekNames
+import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.isoDayNumber
+import kotlinx.datetime.minus
+import kotlinx.datetime.number
+import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlin.collections.plusAssign
 import kotlin.time.Instant
@@ -98,38 +109,7 @@ class AgendaViewModel(
                     this += NoSelectedCalendarsItem
                 }
                 else -> {
-                    days.forEach { day ->
-                        this += AgendaDayHeaderItem(
-                            date = day.date,
-                            dayOfWeek = day.date.dayOfWeek.getDisplayName(),
-                            dayOfMonth = day.date.day.toString(),
-                            month = day.date.month.getShortName(),
-                        )
-
-                        day.events.forEach { event ->
-                            this += AgendaEventItem(
-                                id = event.id,
-                                title = event.title,
-                                time = if (event.isAllDay) {
-                                    "All day"
-                                } else {
-                                    val timeZone = TimeZone.currentSystemDefault()
-                                    val startTime = Instant
-                                        .fromEpochMilliseconds(event.startTime)
-                                        .toLocalDateTime(timeZone)
-                                        .time
-                                    val endTime = Instant
-                                        .fromEpochMilliseconds(event.endTime)
-                                        .toLocalDateTime(timeZone)
-                                        .time
-                                    "${startTime.format()} - ${endTime.format()}"
-                                },
-                                location = event.location,
-                                color = event.color,
-                                isAllDay = event.isAllDay,
-                            )
-                        }
-                    }
+                    addWeekGroupedItems(days, currentDate)
                 }
             }
         }
@@ -142,38 +122,121 @@ class AgendaViewModel(
         )
     }
 
-    private fun DayOfWeek.getDisplayName(): String {
-        return when (this) {
-            DayOfWeek.MONDAY -> "Monday"
-            DayOfWeek.TUESDAY -> "Tuesday"
-            DayOfWeek.WEDNESDAY -> "Wednesday"
-            DayOfWeek.THURSDAY -> "Thursday"
-            DayOfWeek.FRIDAY -> "Friday"
-            DayOfWeek.SATURDAY -> "Saturday"
-            DayOfWeek.SUNDAY -> "Sunday"
+    private fun MutableList<ListItem>.addWeekGroupedItems(days: List<AgendaDay>, currentDate: LocalDate) {
+        val weeks = days.groupBy { day -> day.date.getWeekStart() }
+
+        weeks.forEach { (weekStart, daysInWeek) ->
+            val hasEvents = daysInWeek.any { it.events.isNotEmpty() }
+            val containsCurrentDay = daysInWeek.any { it.date == currentDate }
+
+            if (hasEvents || containsCurrentDay) {
+                addWeekWithEvents(daysInWeek, currentDate)
+            } else {
+                addEmptyWeek(weekStart)
+            }
         }
     }
 
-    private fun Month.getShortName(): String {
-        return when (this) {
-            Month.JANUARY -> "Jan"
-            Month.FEBRUARY -> "Feb"
-            Month.MARCH -> "Mar"
-            Month.APRIL -> "Apr"
-            Month.MAY -> "May"
-            Month.JUNE -> "Jun"
-            Month.JULY -> "Jul"
-            Month.AUGUST -> "Aug"
-            Month.SEPTEMBER -> "Sep"
-            Month.OCTOBER -> "Oct"
-            Month.NOVEMBER -> "Nov"
-            Month.DECEMBER -> "Dec"
+    private fun MutableList<ListItem>.addWeekWithEvents(daysInWeek: List<AgendaDay>, currentDate: LocalDate) {
+        daysInWeek.forEach { day ->
+            val isCurrentDay = day.date == currentDate
+            val hasEvents = day.events.isNotEmpty()
+
+            // Show current day always, or days with events
+            if (isCurrentDay || hasEvents) {
+                this += createDayHeaderItem(day.date)
+
+                if (hasEvents) {
+                    day.events.forEach { event ->
+                        this += createEventItem(event)
+                    }
+                } else {
+                    // Current day with no events
+                    this += AgendaEmptyDayItem(
+                        date = day.date,
+                        message = "No events",
+                    )
+                }
+            }
         }
     }
 
-    private fun LocalTime.format(): String {
+    private fun MutableList<ListItem>.addEmptyWeek(weekStart: LocalDate) {
+        val weekEnd = weekStart.plus(DatePeriod(days = 6))
+        val weekLabel = formatWeekRange(weekStart, weekEnd)
+
+        this += AgendaWeekHeaderItem(
+            startDate = weekStart,
+            endDate = weekEnd,
+            weekLabel = weekLabel,
+        )
+    }
+
+    private fun createDayHeaderItem(date: LocalDate): AgendaDayHeaderItem {
+        return AgendaDayHeaderItem(
+            date = date,
+            dayOfWeek = DayOfWeekNames.ENGLISH_FULL.names[date.dayOfWeek.ordinal],
+            dayOfMonth = date.day.toString(),
+            month = MonthNames.ENGLISH_ABBREVIATED.names[date.month.number - 1],
+        )
+    }
+
+    private fun createEventItem(event: CalendarEvent): AgendaEventItem {
+        return AgendaEventItem(
+            id = event.id,
+            title = event.title,
+            time = formatEventTime(event),
+            location = event.location,
+            color = event.color,
+            isAllDay = event.isAllDay,
+        )
+    }
+
+    private fun formatEventTime(event: CalendarEvent): String {
+        if (event.isAllDay) {
+            return "All day"
+        }
+
+        val timeZone = TimeZone.currentSystemDefault()
+        val startTime = Instant
+            .fromEpochMilliseconds(event.startTime)
+            .toLocalDateTime(timeZone)
+            .time
+        val endTime = Instant
+            .fromEpochMilliseconds(event.endTime)
+            .toLocalDateTime(timeZone)
+            .time
+
+        return "${startTime.formatTime()} - ${endTime.formatTime()}"
+    }
+
+    private fun LocalTime.formatTime(): String {
         val hourStr = hour.toString().padStart(2, '0')
         val minuteStr = minute.toString().padStart(2, '0')
         return "$hourStr:$minuteStr"
+    }
+
+    /**
+     * Returns the start of the week (Monday) for the given date
+     */
+    private fun LocalDate.getWeekStart(): LocalDate {
+        val dayOfWeek = this.dayOfWeek.isoDayNumber // Monday = 1, Sunday = 7
+        val daysToSubtract = dayOfWeek - 1
+        return this.minus(DatePeriod(days = daysToSubtract))
+    }
+
+    /**
+     * Formats a week range as "Oct 21 - Oct 27" or "Oct 28 - Nov 3" (cross-month)
+     */
+    private fun formatWeekRange(startDate: LocalDate, endDate: LocalDate): String {
+        val monthNames = MonthNames.ENGLISH_ABBREVIATED.names
+        val startMonth = monthNames[startDate.month.number - 1]
+        val endMonth = monthNames[endDate.month.number - 1]
+
+        return if (startDate.month == endDate.month) {
+            "$startMonth ${startDate.day} - ${endDate.day}"
+        } else {
+            "$startMonth ${startDate.day} - $endMonth ${endDate.day}"
+        }
     }
 }

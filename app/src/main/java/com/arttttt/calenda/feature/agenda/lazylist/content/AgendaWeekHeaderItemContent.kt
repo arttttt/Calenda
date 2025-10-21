@@ -8,22 +8,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format.DayOfWeekNames
-import kotlinx.datetime.format.MonthNames
-import kotlinx.datetime.number
-import kotlinx.datetime.todayIn
-import kotlin.time.Clock
 
 @Composable
-fun AgendaDayHeaderItemContent(
+fun AgendaWeekHeaderItemContent(
     modifier: Modifier,
-    dayOfWeek: String,
-    dayOfMonth: String,
-    month: String,
+    weekLabel: String,
 ) {
     Column(
         modifier = modifier
@@ -34,9 +26,17 @@ fun AgendaDayHeaderItemContent(
             ),
     ) {
         Text(
-            text = "$dayOfWeek, $month $dayOfMonth",
+            text = weekLabel,
             style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
+        )
+
+        Text(
+            text = "Nothing planned",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp),
         )
 
         HorizontalDivider(
@@ -47,12 +47,9 @@ fun AgendaDayHeaderItemContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun AgendaDayHeaderItemContentPreview() {
-    val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
-    AgendaDayHeaderItemContent(
+private fun AgendaWeekHeaderItemContentPreview() {
+    AgendaWeekHeaderItemContent(
         modifier = Modifier,
-        dayOfWeek = DayOfWeekNames.ENGLISH_FULL.names[today.dayOfWeek.ordinal],
-        dayOfMonth = today.day.toString(),
-        month = MonthNames.ENGLISH_ABBREVIATED.names[today.month.number - 1],
+        weekLabel = "Oct 21 - Oct 27",
     )
 }
