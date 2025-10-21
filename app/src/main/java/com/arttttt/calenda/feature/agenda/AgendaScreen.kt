@@ -26,10 +26,12 @@ import com.arttttt.calenda.common.presentation.ListItem
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaDayHeaderItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaEventItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaLoadingItemContent
+import com.arttttt.calenda.feature.agenda.lazylist.content.AgendaWeekHeaderItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.content.NoSelectedCalendarsItemContent
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaDayHeaderItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
+import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaWeekHeaderItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.NoSelectedCalendarsItem
 import com.arttttt.calenda.metro.metroViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -153,6 +155,12 @@ private fun AgendaList(
                     dayOfWeek = item.dayOfWeek,
                     dayOfMonth = item.dayOfMonth,
                     month = item.month,
+                )
+                is AgendaWeekHeaderItem -> AgendaWeekHeaderItemContent(
+                    modifier = Modifier
+                        .animateItem()
+                        .fillParentMaxWidth(),
+                    weekLabel = item.weekLabel,
                 )
                 is AgendaEventItem -> AgendaEventItemContent(
                     modifier = Modifier
