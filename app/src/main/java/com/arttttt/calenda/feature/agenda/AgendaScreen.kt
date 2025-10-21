@@ -58,6 +58,7 @@ fun AgendaScreen() {
         uiState = uiState,
         lazyListState = lazyListState,
         onAddCalendarClick = viewModel::onAddCalendarClick,
+        onEventClick = viewModel::onEventClick,
     )
 
     LaunchedEffect(Unit) {
@@ -105,6 +106,7 @@ private fun AgendaScreenContent(
     uiState: AgendaUIState,
     lazyListState: LazyListState,
     onAddCalendarClick: () -> Unit,
+    onEventClick: (AgendaEventItem) -> Unit,
 ) {
 
     Scaffold(
@@ -130,6 +132,7 @@ private fun AgendaScreenContent(
             modifier = Modifier.padding(paddingValues),
             lazyListState = lazyListState,
             items = uiState.items,
+            onEventClick = onEventClick,
         )
     }
 }
@@ -139,6 +142,7 @@ private fun AgendaList(
     modifier: Modifier,
     lazyListState: LazyListState,
     items: List<ListItem>,
+    onEventClick: (AgendaEventItem) -> Unit,
 ) {
     LazyColumn(
         state = lazyListState,
@@ -179,6 +183,7 @@ private fun AgendaList(
                     location = item.location,
                     color = Color(item.color),
                     isAllDay = item.isAllDay,
+                    onClick = { onEventClick(item) },
                 )
                 is AgendaLoadingItem -> AgendaLoadingItemContent(
                     modifier = Modifier
@@ -209,17 +214,25 @@ private fun AgendaScreenContentPreview() {
                 ),
                 AgendaEventItem(
                     id = 1,
+                    eventId = 1,
                     title = "Team Meeting",
+                    description = "Discuss project updates",
                     time = "14:00 - 15:00",
                     location = "Room 101",
+                    startTime = 1696161600000,
+                    endTime = 1696165200000,
                     color = 0xFF0000FF.toInt(),
                     isAllDay = false,
                 ),
                 AgendaEventItem(
                     id = 2,
+                    eventId = 2,
                     title = "Lunch with client",
+                    description = null,
                     time = "12:00 - 13:00",
                     location = null,
+                    startTime = 1696154400000,
+                    endTime = 1696158000000,
                     color = 0xFFFF0000.toInt(),
                     isAllDay = false,
                 ),
@@ -230,5 +243,6 @@ private fun AgendaScreenContentPreview() {
         ),
         lazyListState = rememberLazyListState(),
         onAddCalendarClick = {},
+        onEventClick = {},
     )
 }

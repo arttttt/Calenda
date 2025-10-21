@@ -1,6 +1,7 @@
 package com.arttttt.calenda.feature.agenda.lazylist.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,10 +29,12 @@ fun AgendaEventItemContent(
     location: String?,
     color: Color,
     isAllDay: Boolean,
+    onClick: () -> Unit,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(
                 horizontal = 16.dp,
                 vertical = 12.dp,
@@ -88,5 +91,6 @@ private fun AgendaEventItemContentPreview() {
         location = "Conference Room A",
         color = Color.Blue,
         isAllDay = false,
+        onClick = {},
     )
 }
