@@ -180,8 +180,8 @@
 
 ### Appendix — Verified Repository Paths
 
-* `settings.gradle.kts` (module includes, build logic). citeturn6view0
-* `app/build.gradle.kts` (namespace, SDKs, plugins, dependencies). citeturn6view1
-* `gradle/libs.versions.toml` (versions for Kotlin/AGP/Compose/Glance/Nav3/SimpleMVI). citeturn10view0
+* `settings.gradle.kts` (module includes, build logic).
+* `app/build.gradle.kts` (namespace, SDKs, plugins, dependencies).
+* `gradle/libs.versions.toml` (versions for Kotlin/AGP/Compose/Glance/Nav3/SimpleMVI).
 
 **End of file.**
