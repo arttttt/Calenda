@@ -14,6 +14,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format.DayOfWeekNames
 import kotlinx.datetime.format.MonthNames
+import kotlinx.datetime.todayIn
 import kotlin.time.Clock
 
 @Composable
@@ -50,7 +51,7 @@ private fun AgendaDayHeaderItemContentPreview() {
     AgendaDayHeaderItemContent(
         modifier = Modifier,
         dayOfWeek = DayOfWeekNames.ENGLISH_FULL.names[today.dayOfWeek.ordinal],
-        dayOfMonth = today.dayOfMonth.toString(),
-        month = MonthNames.ENGLISH_ABBREVIATED.names[today.monthNumber - 1],
+        dayOfMonth = today.day.toString(),
+        month = MonthNames.ENGLISH_ABBREVIATED.names[today.month.number - 1],
     )
 }

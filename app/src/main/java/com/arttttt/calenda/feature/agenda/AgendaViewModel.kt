@@ -160,8 +160,8 @@ class AgendaViewModel(
         return AgendaDayHeaderItem(
             date = date,
             dayOfWeek = DayOfWeekNames.ENGLISH_FULL.names[date.dayOfWeek.ordinal],
-            dayOfMonth = date.dayOfMonth.toString(),
-            month = MonthNames.ENGLISH_ABBREVIATED.names[date.monthNumber - 1],
+            dayOfMonth = date.day.toString(),
+            month = MonthNames.ENGLISH_ABBREVIATED.names[date.month.number - 1],
         )
     }
 
@@ -214,13 +214,13 @@ class AgendaViewModel(
      */
     private fun formatWeekRange(startDate: LocalDate, endDate: LocalDate): String {
         val monthNames = MonthNames.ENGLISH_ABBREVIATED.names
-        val startMonth = monthNames[startDate.monthNumber - 1]
-        val endMonth = monthNames[endDate.monthNumber - 1]
+        val startMonth = monthNames[startDate.month.number - 1]
+        val endMonth = monthNames[endDate.month.number - 1]
 
         return if (startDate.month == endDate.month) {
-            "$startMonth ${startDate.dayOfMonth} - ${endDate.dayOfMonth}"
+            "$startMonth ${startDate.day} - ${endDate.day}"
         } else {
-            "$startMonth ${startDate.dayOfMonth} - $endMonth ${endDate.dayOfMonth}"
+            "$startMonth ${startDate.day} - $endMonth ${endDate.day}"
         }
     }
 }
