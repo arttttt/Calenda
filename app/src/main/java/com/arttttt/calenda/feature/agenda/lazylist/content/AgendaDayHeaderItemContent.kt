@@ -10,9 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import java.time.LocalDate
-import java.time.format.TextStyle
-import java.util.Locale
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.DayOfWeekNames
+import kotlinx.datetime.format.MonthNames
+import kotlin.time.Clock
 
 @Composable
 fun AgendaDayHeaderItemContent(
@@ -44,11 +46,11 @@ fun AgendaDayHeaderItemContent(
 @Preview(showBackground = true)
 @Composable
 private fun AgendaDayHeaderItemContentPreview() {
-    val today = LocalDate.now()
+    val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
     AgendaDayHeaderItemContent(
         modifier = Modifier,
-        dayOfWeek = today.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()),
+        dayOfWeek = DayOfWeekNames.ENGLISH_FULL.names[today.dayOfWeek.ordinal],
         dayOfMonth = today.dayOfMonth.toString(),
-        month = today.month.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+        month = MonthNames.ENGLISH_ABBREVIATED.names[today.monthNumber - 1],
     )
 }
