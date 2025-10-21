@@ -18,12 +18,5 @@ sealed interface Screen : NavKey {
     @Serializable
     data class EventDetails(
         val eventId: Long,
-        val title: String,
-        val description: String?,
-        val location: String?,
-        val startTime: Long,
-        val endTime: Long,
-        val isAllDay: Boolean,
-        val color: Int,
     ) : Screen
 }

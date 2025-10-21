@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.arttttt.calenda.Screen
 import com.arttttt.calenda.common.domain.store.AgendaStore
 import com.arttttt.calenda.feature.agenda.di.AgendaScreenGraph
+import com.arttttt.calenda.feature.eventdetails.di.EventDetailsScreenGraph
+import com.arttttt.calenda.feature.eventdetails.domain.EventDetailsStore
 import com.arttttt.calenda.feature.permissions.domain.CalendarPermissionsManager
 import com.arttttt.calenda.metro.ViewModelGraph
 import com.arttttt.nav3router.Router
@@ -45,4 +47,12 @@ interface UIGraph : ViewModelGraph.Factory {
     ): AgendaStore {
         return factory.createAgendaScreenGraph().agendaStore
     }
+
+    fun createEventDetailsStore(
+        eventId: Long,
+    ): EventDetailsStore {
+        return createEventDetailsScreenGraph(eventId).eventDetailsStore
+    }
+
+    fun createEventDetailsScreenGraph(eventId: Long): EventDetailsScreenGraph
 }

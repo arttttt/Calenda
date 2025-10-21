@@ -12,6 +12,8 @@ interface EventsRepository {
         endTime: Long,
     ): Result<List<CalendarEvent>>
 
+    suspend fun getEventById(eventId: Long): Result<CalendarEvent?>
+
     fun observeEventChanges(
         calendarIds: Set<Long>,
         startTime: Long,

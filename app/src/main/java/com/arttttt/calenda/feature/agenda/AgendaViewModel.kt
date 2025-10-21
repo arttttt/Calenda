@@ -181,17 +181,10 @@ class AgendaViewModel(
         )
     }
 
-    fun onEventClick(eventItem: AgendaEventItem) {
+    fun onEventClick(eventId: Long) {
         router.push(
             Screen.EventDetails(
-                eventId = eventItem.eventId,
-                title = eventItem.title,
-                description = eventItem.description,
-                location = eventItem.location,
-                startTime = eventItem.startTime,
-                endTime = eventItem.endTime,
-                isAllDay = eventItem.isAllDay,
-                color = eventItem.color,
+                eventId = eventId,
             )
         )
     }

@@ -106,7 +106,7 @@ private fun AgendaScreenContent(
     uiState: AgendaUIState,
     lazyListState: LazyListState,
     onAddCalendarClick: () -> Unit,
-    onEventClick: (AgendaEventItem) -> Unit,
+    onEventClick: (Long) -> Unit,
 ) {
 
     Scaffold(
@@ -142,7 +142,7 @@ private fun AgendaList(
     modifier: Modifier,
     lazyListState: LazyListState,
     items: List<ListItem>,
-    onEventClick: (AgendaEventItem) -> Unit,
+    onEventClick: (Long) -> Unit,
 ) {
     LazyColumn(
         state = lazyListState,
@@ -183,7 +183,7 @@ private fun AgendaList(
                     location = item.location,
                     color = Color(item.color),
                     isAllDay = item.isAllDay,
-                    onClick = { onEventClick(item) },
+                    onClick = { onEventClick(item.id) },
                 )
                 is AgendaLoadingItem -> AgendaLoadingItemContent(
                     modifier = Modifier
@@ -243,6 +243,6 @@ private fun AgendaScreenContentPreview() {
         ),
         lazyListState = rememberLazyListState(),
         onAddCalendarClick = {},
-        onEventClick = {},
+        onEventClick = { _ -> },
     )
 }

@@ -60,7 +60,7 @@ fun RootContent(
                     metadata = BottomSheetSceneStrategy.bottomSheet(
                         modalBottomSheetProperties = ModalBottomSheetDefaults.properties
                     )
-                ) { EventDetailsScreen() }
+                ) { EventDetailsScreen(eventId = it.eventId) }
             }
         )
     }

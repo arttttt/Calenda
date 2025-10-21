@@ -76,6 +76,40 @@ class EventsRepositoryImpl(
         }
     }
 
+    override suspend fun getEventById(eventId: Long): Result<CalendarEvent?> {
+        return runCatching {
+            withContext(Dispatchers.IO) {
+                val selection = "${CalendarContract.Instances._ID} = ?"
+                val selectionArgs = arrayOf(eventId.toString())
+
+                contentResolver.query(
+                    INSTANCES_URI,
+                    projection,
+                    selection,
+                    selectionArgs,
+                    null,
+                )?.use { cursor ->
+                    if (cursor.moveToFirst()) {
+                        cursor.getCalendarEvent(
+                            idColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances._ID),
+                            eventIdColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.EVENT_ID),
+                            calendarIdColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.CALENDAR_ID),
+                            titleColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.TITLE),
+                            descriptionColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.DESCRIPTION),
+                            locationColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.EVENT_LOCATION),
+                            beginColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.BEGIN),
+                            endColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.END),
+                            allDayColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.ALL_DAY),
+                            colorColumn = cursor.getColumnIndexOrThrow(CalendarContract.Instances.CALENDAR_COLOR),
+                        )
+                    } else {
+                        null
+                    }
+                }
+            }
+        }
+    }
+
     override fun observeEventChanges(
         calendarIds: Set<Long>,
         startTime: Long,
