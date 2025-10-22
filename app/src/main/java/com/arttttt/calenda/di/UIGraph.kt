@@ -4,8 +4,6 @@ import androidx.activity.ComponentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arttttt.calenda.Screen
-import com.arttttt.calenda.common.domain.store.AgendaStore
-import com.arttttt.calenda.feature.agenda.di.AgendaScreenGraph
 import com.arttttt.calenda.feature.permissions.domain.CalendarPermissionsManager
 import com.arttttt.nav3router.Router
 import dev.zacsweers.metro.AppScope
@@ -45,10 +43,4 @@ interface UIGraph {
         return Router()
     }
 
-    @Provides
-    fun provideAgendaStore(
-        factory: AgendaScreenGraph.Factory
-    ): AgendaStore {
-        return factory.createAgendaScreenGraph().agendaStore
-    }
 }

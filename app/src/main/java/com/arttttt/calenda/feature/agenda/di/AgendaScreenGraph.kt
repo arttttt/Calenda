@@ -9,7 +9,10 @@ import dev.zacsweers.metro.GraphExtension
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
 
-@GraphExtension(AgendaScreenScope::class)
+@GraphExtension(
+    scope = AgendaScreenScope::class,
+    extends = UIScope::class,
+)
 interface AgendaScreenGraph {
 
     @ContributesTo(UIScope::class)
