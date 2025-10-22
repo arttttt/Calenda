@@ -1,3 +1,5 @@
 package com.arttttt.calenda.feature.agenda.di
 
-abstract class AgendaScreenScope private constructor()
+import com.arttttt.calenda.di.UIScope
+
+abstract class AgendaScreenScope private constructor() : UIScope()

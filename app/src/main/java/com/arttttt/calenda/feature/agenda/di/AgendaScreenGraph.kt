@@ -11,7 +11,6 @@ import dev.zacsweers.metro.SingleIn
 
 @GraphExtension(
     scope = AgendaScreenScope::class,
-    extends = UIScope::class,
 )
 interface AgendaScreenGraph {
 
