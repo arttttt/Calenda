@@ -3,11 +3,11 @@ package com.arttttt.calenda.feature.addcalendar.presentation
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arttttt.calenda.di.UIScope
 import com.arttttt.calenda.feature.addcalendar.domain.AddCalendarStore
 import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.item.CalendarListItem
 import com.arttttt.calenda.feature.addcalendar.presentation.lazylist.item.NoCalendarsListItem
 import com.arttttt.calenda.metro.ViewModelKey
-import com.arttttt.calenda.metro.ViewModelScope
 import com.arttttt.simplemvi.store.plus
 import com.arttttt.simplemvi.viewmodel.attachStore
 import dev.zacsweers.metro.ContributesIntoMap
@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlin.collections.map
 
 @ViewModelKey(AddCalendarViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(UIScope::class)
 @Inject
 class AddCalendarViewModel(
     private val addCalendarStore: AddCalendarStore,

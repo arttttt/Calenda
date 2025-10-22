@@ -4,16 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.arttttt.calenda.Screen
 import com.arttttt.calenda.arch.CommandsHandler
+import com.arttttt.calenda.di.UIScope
 import com.arttttt.calenda.feature.permissions.domain.CalendarPermissionsManager
 import com.arttttt.calenda.metro.ViewModelKey
-import com.arttttt.calenda.metro.ViewModelScope
 import com.arttttt.nav3router.Router
 import dev.zacsweers.metro.ContributesIntoMap
 import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.launch
 
 @ViewModelKey(PermissionsViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(UIScope::class)
 @Inject
 class PermissionsViewModel(
     private val router: Router<Screen>,

@@ -14,8 +14,8 @@ import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaEventItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaLoadingItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.AgendaWeekHeaderItem
 import com.arttttt.calenda.feature.agenda.lazylist.item.NoSelectedCalendarsItem
+import com.arttttt.calenda.di.UIScope
 import com.arttttt.calenda.metro.ViewModelKey
-import com.arttttt.calenda.metro.ViewModelScope
 import com.arttttt.nav3router.Router
 import com.arttttt.simplemvi.store.plus
 import com.arttttt.simplemvi.viewmodel.attachStore
@@ -42,7 +42,7 @@ import kotlin.collections.plusAssign
 import kotlin.time.Instant
 
 @ViewModelKey(AgendaViewModel::class)
-@ContributesIntoMap(ViewModelScope::class)
+@ContributesIntoMap(UIScope::class)
 @Inject
 class AgendaViewModel(
     private val agendaStore: AgendaStore,

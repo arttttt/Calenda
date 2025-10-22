@@ -1,23 +1,26 @@
 package com.arttttt.calenda.di
 
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.arttttt.calenda.Screen
 import com.arttttt.calenda.common.domain.store.AgendaStore
 import com.arttttt.calenda.feature.agenda.di.AgendaScreenGraph
 import com.arttttt.calenda.feature.permissions.domain.CalendarPermissionsManager
-import com.arttttt.calenda.metro.ViewModelGraph
 import com.arttttt.nav3router.Router
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
+import dev.zacsweers.metro.Multibinds
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.SingleIn
+import dev.zacsweers.metro.Provider
+import kotlin.reflect.KClass
 
 @GraphExtension(
     scope = UIScope::class,
 )
-interface UIGraph : ViewModelGraph.Factory {
+interface UIGraph {
 
     @ContributesTo(AppScope::class)
     @GraphExtension.Factory
@@ -32,6 +35,9 @@ interface UIGraph : ViewModelGraph.Factory {
     val calendarPermissionsManager: CalendarPermissionsManager
 
     val router: Router<Screen>
+
+    @Multibinds
+    val viewModelProviders: Map<KClass<out ViewModel>, Provider<ViewModel>>
 
     @SingleIn(UIScope::class)
     @Provides
